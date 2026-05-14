@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import React from 'react';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import Encabezado from './components/navegacion/Encabezado';
 import Inicio from './views/Inicio';
 import Catalogo from './views/Catalogo';
@@ -10,26 +10,6 @@ import Pagina404 from './views/Pagina404';
 import './App.css';
 
 function App() {
-  const location = useLocation();
-
-  // Debug: Log when App mounts
-  useEffect(() => {
-    console.log('🚀 App mounted successfully');
-    console.log('📍 Current location:', location.pathname);
-    console.log('📦 Environment variables loaded:', {
-      VITE_SUPABASE_URL: import.meta.env.VITE_SUPABASE_URL ? '✅ Yes' : '❌ No',
-      VITE_SUPABASE_ANON_KEY: import.meta.env.VITE_SUPABASE_ANON_KEY ? '✅ Yes' : '❌ No',
-    });
-  }, []);
-
-  // Debug: Log route changes
-  useEffect(() => {
-    console.log('🔄 Route changed to:', location.pathname);
-  }, [location]);
-
-  // Debug: Log component rendering
-  console.log('🎨 App rendering, current path:', location.pathname);
-
   return (
     <div className="app">
       <Encabezado />
