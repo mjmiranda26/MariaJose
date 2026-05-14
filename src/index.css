@@ -10,16 +10,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #f5f5f5;
-}
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-}
-
-#root {
+  background: linear-gradient(135deg, #faf8f9 0%, #ffffff 100%);
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+  padding-top: 80px; /* Space for fixed header */
 }

@@ -1,0 +1,74 @@
+/* Color Variables */
+:root {
+  /* Main Colors - Pastel Pink Theme */
+  --color-primary: #f3a4b5;      /* Pastel Pink */
+  --color-primary-light: #ffc0cb;  /* Light Pink */
+  --color-primary-dark: #e8869c;   /* Darker Pastel Pink */
+  
+  /* Secondary Colors */
+  --color-secondary: #c9e4de;      /* Pastel Mint */
+  --color-secondary-light: #e0f2f1;
+  --color-secondary-dark: #a8d8d0;
+  
+  /* Accent Colors */
+  --color-accent: #f9e6cf;         /* Pastel Cream */
+  --color-accent-light: #fff5e8;
+  --color-accent-dark: #f5dbb1;
+  
+  /* Neutral Colors */
+  --color-white: #ffffff;
+  --color-gray-50: #faf8f9;
+  --color-gray-100: #f5f0f2;
+  --color-gray-200: #e9e1e4;
+  --color-gray-300: #d4c9ce;
+  --color-gray-400: #b8aab1;
+  --color-gray-500: #9c8a93;
+  --color-gray-600: #7a6a72;
+  --color-gray-700: #5c4f55;
+  --color-gray-800: #3e3539;
+  --color-gray-900: #211c1e;
+  --color-black: #1a1618;
+  
+  /* Semantic Colors */
+  --color-success: #a8e6cf;
+  --color-warning: #ffe0b5;
+  --color-error: #f5c2c2;
+  --color-info: #c2d4f5;
+  
+  /* Spacing */
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+  --spacing-2xl: 3rem;
+  
+  /* Border Radius */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+  --radius-full: 9999px;
+  
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+  
+  /* Transitions */
+  --transition-fast: 150ms ease-in-out;
+  --transition-normal: 300ms ease-in-out;
+  --transition-slow: 500ms ease-in-out;
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-primary: #d48a9c;
+    --color-primary-light: #e8a6b5;
+    --color-primary-dark: #b86d82;
+    --color-secondary: #7ba39a;
+    --color-accent: #cfb897;
+  }
+}
