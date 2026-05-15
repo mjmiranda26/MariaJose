@@ -131,6 +131,52 @@
   margin-bottom: var(--spacing-lg);
 }
 
+
+/* Add to existing Views.css */
+
+/* Form group styles */
+.form-group {
+  position: relative;
+  width: 100%;
+}
+
+/* Error styles */
+.form-input.error {
+  border-color: var(--color-error, #ef4444);
+  background-color: #fef2f2;
+}
+
+.form-input.error:focus {
+  border-color: var(--color-error, #ef4444);
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+.error-message {
+  color: var(--color-error, #ef4444);
+  font-size: 0.8rem;
+  margin-top: 0.25rem;
+  display: block;
+  text-align: left;
+  animation: fadeInUp 0.2s ease-out;
+}
+
+/* Disabled button state */
+.form-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.form-button:disabled:hover {
+  transform: none;
+  box-shadow: var(--shadow-md);
+}
+
+/* Success input state */
+.form-input.success {
+  border-color: var(--color-success, #10b981);
+}
+
 /* Animations */
 @keyframes fadeInUp {
   from {

@@ -1,0 +1,29 @@
+/* Custom toast animations */
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.custom-toast {
+  animation: slideIn 0.3s ease-out;
+}
+
+/* Toast container customization */
+:root {
+  --toastify-toast-min-height: 60px;
+  --toastify-toast-border-radius: 12px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .custom-toast {
+    max-width: 90%;
+    margin: 0 auto;
+  }
+}
