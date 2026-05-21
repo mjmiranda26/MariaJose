@@ -1,0 +1,202 @@
+.modal-eliminacion-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeInEliminacion 0.2s ease-out;
+}
+
+@keyframes fadeInEliminacion {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.modal-eliminacion-container {
+  background: var(--color-white);
+  border-radius: var(--radius-xl);
+  width: 90%;
+  max-width: 450px;
+  max-height: 90vh;
+  overflow: hidden;
+  box-shadow: var(--shadow-xl);
+  animation: slideUpEliminacion 0.3s ease-out;
+}
+
+@keyframes slideUpEliminacion {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.modal-eliminacion-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-lg);
+  border-bottom: 1px solid var(--color-gray-200);
+  background: linear-gradient(135deg, #fef2f2 0%, var(--color-white) 100%);
+}
+
+.modal-eliminacion-title {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.modal-eliminacion-icon {
+  font-size: 1.25rem;
+  color: #ef4444;
+}
+
+.modal-eliminacion-icon.warning {
+  color: #ef4444;
+}
+
+.modal-eliminacion-title h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--color-gray-800);
+  margin: 0;
+}
+
+.modal-eliminacion-close {
+  background: none;
+  border: none;
+  font-size: 1.25rem;
+  cursor: pointer;
+  color: var(--color-gray-400);
+  padding: 0.5rem;
+  border-radius: var(--radius-md);
+  transition: all var(--transition-fast);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-eliminacion-close:hover {
+  background: var(--color-gray-100);
+  color: var(--color-gray-600);
+  transform: rotate(90deg);
+}
+
+.modal-eliminacion-body {
+  padding: var(--spacing-lg);
+}
+
+.modal-eliminacion-body p {
+  color: var(--color-gray-700);
+  margin-bottom: var(--spacing-md);
+  line-height: 1.5;
+}
+
+.categoria-info {
+  background: var(--color-gray-50);
+  padding: var(--spacing-md);
+  border-radius: var(--radius-md);
+  margin: var(--spacing-md) 0;
+  border-left: 4px solid var(--color-primary);
+}
+
+.categoria-info strong {
+  display: block;
+  color: var(--color-gray-800);
+  font-size: 1rem;
+  margin-bottom: var(--spacing-xs);
+}
+
+.categoria-descripcion {
+  font-size: 0.875rem;
+  color: var(--color-gray-600);
+  margin-top: var(--spacing-xs);
+}
+
+.advertencia {
+  font-size: 0.875rem;
+  color: #ef4444 !important;
+  background: #fef2f2;
+  padding: var(--spacing-sm);
+  border-radius: var(--radius-md);
+  margin-top: var(--spacing-md);
+}
+
+.modal-eliminacion-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--spacing-md);
+  padding: var(--spacing-lg);
+  border-top: 1px solid var(--color-gray-200);
+  background: var(--color-gray-50);
+}
+
+.btn-cancel-eliminacion,
+.btn-confirm-eliminacion {
+  padding: 0.625rem 1.25rem;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.btn-cancel-eliminacion {
+  background: transparent;
+  border: 2px solid var(--color-gray-300);
+  color: var(--color-gray-600);
+}
+
+.btn-cancel-eliminacion:hover:not(:disabled) {
+  background: var(--color-gray-100);
+  border-color: var(--color-gray-400);
+}
+
+.btn-confirm-eliminacion {
+  background: #ef4444;
+  border: none;
+  color: white;
+}
+
+.btn-confirm-eliminacion:hover:not(:disabled) {
+  background: #dc2626;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-icon-eliminacion {
+  font-size: 0.875rem;
+}
+
+@media (max-width: 640px) {
+  .modal-eliminacion-container {
+    width: 95%;
+    margin: var(--spacing-md);
+  }
+
+  .modal-eliminacion-footer {
+    flex-direction: column;
+  }
+
+  .btn-cancel-eliminacion,
+  .btn-confirm-eliminacion {
+    width: 100%;
+    justify-content: center;
+  }
+}

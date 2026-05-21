@@ -1,0 +1,235 @@
+/* Modal Registro Overlay */
+.modal-registro-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeInRegistro 0.2s ease-out;
+}
+
+@keyframes fadeInRegistro {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.modal-registro-container {
+  background: var(--color-white);
+  border-radius: var(--radius-xl);
+  width: 90%;
+  max-width: 500px;
+  max-height: 90vh;
+  overflow: hidden;
+  box-shadow: var(--shadow-xl);
+  animation: slideUpRegistro 0.3s ease-out;
+}
+
+@keyframes slideUpRegistro {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.modal-registro-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-lg);
+  border-bottom: 1px solid var(--color-gray-200);
+  background: linear-gradient(135deg, var(--color-gray-50) 0%, var(--color-white) 100%);
+}
+
+.modal-registro-title {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.modal-registro-icon {
+  font-size: 1.25rem;
+  color: var(--color-primary-dark);
+}
+
+.modal-registro-title h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--color-gray-800);
+  margin: 0;
+}
+
+.modal-registro-close {
+  background: none;
+  border: none;
+  font-size: 1.25rem;
+  cursor: pointer;
+  color: var(--color-gray-400);
+  padding: 0.5rem;
+  border-radius: var(--radius-md);
+  transition: all var(--transition-fast);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-registro-close:hover {
+  background: var(--color-gray-100);
+  color: var(--color-gray-600);
+  transform: rotate(90deg);
+}
+
+.modal-registro-body {
+  padding: var(--spacing-lg);
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+.form-group-registro {
+  margin-bottom: var(--spacing-lg);
+}
+
+.form-group-registro label {
+  display: block;
+  margin-bottom: var(--spacing-sm);
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: var(--color-gray-700);
+}
+
+.required {
+  color: #ef4444;
+  margin-left: 2px;
+}
+
+.form-input-registro,
+.form-textarea-registro,
+.form-select-registro {
+  width: 100%;
+  padding: 0.625rem 0.875rem;
+  border: 2px solid var(--color-gray-200);
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
+  transition: all var(--transition-fast);
+  background: var(--color-white);
+  font-family: inherit;
+}
+
+.form-input-registro:focus,
+.form-textarea-registro:focus,
+.form-select-registro:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(243, 164, 181, 0.1);
+}
+
+.form-textarea-registro {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.form-hint-registro {
+  display: block;
+  margin-top: var(--spacing-xs);
+  font-size: 0.75rem;
+  color: var(--color-gray-400);
+}
+
+.modal-registro-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--spacing-md);
+  padding: var(--spacing-lg);
+  border-top: 1px solid var(--color-gray-200);
+  background: var(--color-gray-50);
+}
+
+.btn-cancel-registro,
+.btn-save-registro {
+  padding: 0.625rem 1.25rem;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.btn-cancel-registro {
+  background: transparent;
+  border: 2px solid var(--color-gray-300);
+  color: var(--color-gray-600);
+}
+
+.btn-cancel-registro:hover:not(:disabled) {
+  background: var(--color-gray-100);
+  border-color: var(--color-gray-400);
+}
+
+.btn-save-registro {
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+  border: none;
+  color: white;
+}
+
+.btn-save-registro:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-save-registro:disabled,
+.btn-cancel-registro:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.spinner-small {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spinRegistro 0.6s linear infinite;
+}
+
+@keyframes spinRegistro {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 640px) {
+  .modal-registro-container {
+    width: 95%;
+    margin: var(--spacing-md);
+  }
+
+  .modal-registro-body {
+    padding: var(--spacing-md);
+  }
+
+  .modal-registro-footer {
+    flex-direction: column;
+  }
+
+  .btn-cancel-registro,
+  .btn-save-registro {
+    width: 100%;
+    justify-content: center;
+  }
+}

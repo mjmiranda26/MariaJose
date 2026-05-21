@@ -1,0 +1,250 @@
+.tarjeta-categoria {
+  background: var(--color-white);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-lg);
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-normal);
+  border: 1px solid var(--color-gray-200);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.tarjeta-categoria:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--color-primary-light);
+}
+
+.tarjeta-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: var(--spacing-md);
+}
+
+.tarjeta-titulo {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  flex: 1;
+}
+
+.tarjeta-icon {
+  font-size: 1.25rem;
+  color: var(--color-primary-dark);
+}
+
+.tarjeta-titulo h3 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--color-gray-800);
+  margin: 0;
+  word-break: break-word;
+}
+
+.estado-badge-tarjeta {
+  display: inline-block;
+  padding: 0.25rem 0.625rem;
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.badge-tarjeta-success {
+  background: rgba(168, 230, 207, 0.2);
+  color: #0a7c5c;
+}
+
+.badge-tarjeta-inactive {
+  background: rgba(220, 220, 220, 0.3);
+  color: var(--color-gray-600);
+}
+
+.tarjeta-body {
+  flex: 1;
+  margin-bottom: var(--spacing-md);
+}
+
+.tarjeta-descripcion {
+  color: var(--color-gray-600);
+  font-size: 0.875rem;
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.tarjeta-descripcion.vacio {
+  color: var(--color-gray-400);
+  font-style: italic;
+}
+
+.tarjeta-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: var(--spacing-md);
+  border-top: 1px solid var(--color-gray-200);
+}
+
+.tarjeta-fecha {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.fecha-icon {
+  font-size: 0.75rem;
+  color: var(--color-gray-400);
+}
+
+.tarjeta-fecha span {
+  font-size: 0.75rem;
+  color: var(--color-gray-400);
+}
+
+.tarjeta-acciones {
+  display: flex;
+  gap: var(--spacing-sm);
+}
+
+.tarjeta-btn {
+  background: none;
+  border: none;
+  padding: 0.5rem;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  font-size: 1rem;
+}
+
+.tarjeta-btn.view-btn {
+  color: var(--color-info);
+}
+
+.tarjeta-btn.view-btn:hover {
+  background: rgba(59, 130, 246, 0.1);
+  transform: scale(1.1);
+}
+
+.tarjeta-btn.edit-btn {
+  color: var(--color-primary-dark);
+}
+
+.tarjeta-btn.edit-btn:hover {
+  background: rgba(243, 164, 181, 0.1);
+  transform: scale(1.1);
+}
+
+.tarjeta-btn.delete-btn {
+  color: #f5c2c2;
+}
+
+.tarjeta-btn.delete-btn:hover {
+  background: rgba(245, 194, 194, 0.1);
+  color: #ef4444;
+  transform: scale(1.1);
+}
+
+/* Variante Lista */
+.tarjeta-categoria-list {
+  background: var(--color-white);
+  border-radius: var(--radius-lg);
+  margin-bottom: var(--spacing-sm);
+  border: 1px solid var(--color-gray-200);
+  transition: all var(--transition-fast);
+}
+
+.tarjeta-categoria-list:hover {
+  background: var(--color-gray-50);
+  border-color: var(--color-primary-light);
+}
+
+.tarjeta-list-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-md);
+  gap: var(--spacing-md);
+  flex-wrap: wrap;
+}
+
+.list-info {
+  flex: 1;
+}
+
+.list-header {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  flex-wrap: wrap;
+  margin-bottom: var(--spacing-xs);
+}
+
+.list-icon {
+  font-size: 1rem;
+  color: var(--color-primary-dark);
+}
+
+.list-header h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-gray-800);
+  margin: 0;
+}
+
+.list-description {
+  color: var(--color-gray-600);
+  font-size: 0.875rem;
+  margin: var(--spacing-xs) 0;
+}
+
+.list-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  margin-top: var(--spacing-xs);
+}
+
+.meta-icon {
+  font-size: 0.75rem;
+  color: var(--color-gray-400);
+}
+
+.list-meta span {
+  font-size: 0.75rem;
+  color: var(--color-gray-400);
+}
+
+.list-actions {
+  display: flex;
+  gap: var(--spacing-sm);
+}
+
+@media (max-width: 640px) {
+  .tarjeta-categoria {
+    padding: var(--spacing-md);
+  }
+
+  .tarjeta-header {
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+
+  .estado-badge-tarjeta {
+    align-self: flex-start;
+  }
+
+  .tarjeta-list-content {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .list-actions {
+    align-self: flex-end;
+  }
+}
