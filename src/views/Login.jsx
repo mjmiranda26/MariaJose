@@ -12,7 +12,8 @@ import {
 import toast from 'react-hot-toast';
 import { supabase } from '../database/supabaseconfig';
 import { mostrarExito, mostrarError, mostrarCargando } from '../components/NotificacionOperacion';
-import './Views.css';
+import '../styles/auth/iniciarSesion.css';
+import '../styles/auth/registrarFormulario.css';
 
 export default function Login() {
   const [esRegistro, setEsRegistro] = useState(false);
@@ -115,7 +116,6 @@ export default function Login() {
         if (error) throw error;
 
         if (data.user) {
-          // Dismiss loading toast before showing success
           toast.dismiss(loadingToastId);
           
           // Create user profile in a custom table (optional)
@@ -158,7 +158,6 @@ export default function Login() {
         if (error) throw error;
 
         if (data.user) {
-          // Dismiss loading toast before showing success and navigating
           toast.dismiss(loadingToastId);
           mostrarExito('Bienvenido de nuevo');
           setIsLoading(false);
@@ -168,10 +167,8 @@ export default function Login() {
     } catch (error) {
       console.error('Error:', error);
       
-      // Dismiss loading toast before showing error
       toast.dismiss(loadingToastId);
       
-      // Handle specific error messages
       let errorMessage = 'Ocurrió un error. Por favor, intenta de nuevo.';
       
       switch (error.message) {
@@ -196,141 +193,227 @@ export default function Login() {
     }
   };
 
-  // Helper function to check if field has error
   const hasError = (field) => {
     return touched[field] && errors[field];
   };
 
   return (
-    <div className="view-container">
-      <div className="view-card login-card">
-        <div className="login-header">
-          {esRegistro ? (
-            <FaUserPlus className="login-icon" />
-          ) : (
-            <FaSignInAlt className="login-icon" />
-          )}
-          <h1>{esRegistro ? 'Registrarse' : 'Iniciar Sesión'}</h1>
-        </div>
-        
-        <form onSubmit={handleSubmit} className="login-form">
-          {esRegistro && (
-            <div className="form-group">
-              <div className="input-wrapper">
-                <FaUser className="input-icon" />
-                <input
-                  type="text"
-                  name="nombre"
-                  placeholder="Nombre completo"
-                  className={`form-input ${hasError('nombre') ? 'error' : ''}`}
-                  value={formData.nombre}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  disabled={isLoading}
-                />
+    <div className="auth-wrapper">
+      <div className="auth-container">
+        {esRegistro ? (
+          <div className="registrar-card">
+            <div className="registrar-header">
+              <FaUserPlus className="registrar-icon" />
+              <h1>Registrarse</h1>
+            </div>
+            
+            <form onSubmit={handleSubmit} className="registrar-form">
+              <div className="form-group">
+                <div className="input-wrapper">
+                  <FaUser className="input-icon" />
+                  <input
+                    type="text"
+                    name="nombre"
+                    placeholder="Nombre completo"
+                    className={`form-input ${hasError('nombre') ? 'error' : ''}`}
+                    value={formData.nombre}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    disabled={isLoading}
+                  />
+                </div>
+                {hasError('nombre') && (
+                  <span className="error-message">{errors.nombre}</span>
+                )}
               </div>
-              {hasError('nombre') && (
-                <span className="error-message">{errors.nombre}</span>
-              )}
-            </div>
-          )}
-          
-          <div className="form-group">
-            <div className="input-wrapper">
-              <FaEnvelope className="input-icon" />
-              <input
-                type="email"
-                name="email"
-                placeholder="Correo electrónico"
-                className={`form-input ${hasError('email') ? 'error' : ''}`}
-                value={formData.email}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                disabled={isLoading}
-              />
-            </div>
-            {hasError('email') && (
-              <span className="error-message">{errors.email}</span>
-            )}
-          </div>
-          
-          <div className="form-group">
-            <div className="input-wrapper">
-              <FaLock className="input-icon" />
-              <input
-                type="password"
-                name="password"
-                placeholder="Contraseña"
-                className={`form-input ${hasError('password') ? 'error' : ''}`}
-                value={formData.password}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                disabled={isLoading}
-              />
-            </div>
-            {hasError('password') && (
-              <span className="error-message">{errors.password}</span>
-            )}
-          </div>
-          
-          {esRegistro && (
-            <div className="form-group">
-              <div className="input-wrapper">
-                <FaLock className="input-icon" />
-                <input
-                  type="password"
-                  name="confirmPassword"
-                  placeholder="Confirmar contraseña"
-                  className={`form-input ${hasError('confirmPassword') ? 'error' : ''}`}
-                  value={formData.confirmPassword}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  disabled={isLoading}
-                />
+              
+              <div className="form-group">
+                <div className="input-wrapper">
+                  <FaEnvelope className="input-icon" />
+                  <input
+                    type="email"
+                    name="email"
+                    placeholder="Correo electrónico"
+                    className={`form-input ${hasError('email') ? 'error' : ''}`}
+                    value={formData.email}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    disabled={isLoading}
+                  />
+                </div>
+                {hasError('email') && (
+                  <span className="error-message">{errors.email}</span>
+                )}
               </div>
-              {hasError('confirmPassword') && (
-                <span className="error-message">{errors.confirmPassword}</span>
-              )}
+              
+              <div className="form-group">
+                <div className="input-wrapper">
+                  <FaLock className="input-icon" />
+                  <input
+                    type="password"
+                    name="password"
+                    placeholder="Contraseña"
+                    className={`form-input ${hasError('password') ? 'error' : ''}`}
+                    value={formData.password}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    disabled={isLoading}
+                  />
+                </div>
+                {hasError('password') && (
+                  <span className="error-message">{errors.password}</span>
+                )}
+              </div>
+              
+              <div className="form-group">
+                <div className="input-wrapper">
+                  <FaLock className="input-icon" />
+                  <input
+                    type="password"
+                    name="confirmPassword"
+                    placeholder="Confirmar contraseña"
+                    className={`form-input ${hasError('confirmPassword') ? 'error' : ''}`}
+                    value={formData.confirmPassword}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    disabled={isLoading}
+                  />
+                </div>
+                {hasError('confirmPassword') && (
+                  <span className="error-message">{errors.confirmPassword}</span>
+                )}
+              </div>
+              
+              <div className="terminos-container">
+                <p className="terminos-text">
+                  Al registrarte, aceptas nuestros{' '}
+                  <a href="#" className="terminos-link">Términos y Condiciones</a>
+                </p>
+              </div>
+              
+              <button 
+                type="submit" 
+                className="register-button"
+                disabled={isLoading}
+              >
+                {isLoading ? (
+                  <>
+                    <FaSpinner className="spinner-icon" />
+                    Registrando...
+                  </>
+                ) : (
+                  <>
+                    <FaUserPlus />
+                    Registrarse
+                  </>
+                )}
+              </button>
+            </form>
+            
+            <button 
+              onClick={() => {
+                setEsRegistro(false);
+                setErrors({});
+                setTouched({});
+                setFormData({
+                  nombre: '',
+                  email: '',
+                  password: '',
+                  confirmPassword: ''
+                });
+              }} 
+              className="switch-button"
+              disabled={isLoading}
+            >
+              <FaExchangeAlt className="switch-icon" />
+              ¿Ya tienes cuenta? Inicia Sesión
+            </button>
+          </div>
+        ) : (
+          <div className="iniciar-sesion-card">
+            <div className="iniciar-sesion-header">
+              <FaSignInAlt className="iniciar-sesion-icon" />
+              <h1>Iniciar Sesión</h1>
             </div>
-          )}
-          
-          <button 
-            type="submit" 
-            className="form-button"
-            disabled={isLoading}
-          >
-            {isLoading ? (
-              <>
-                <FaSpinner className="spinner-icon" />
-                Procesando...
-              </>
-            ) : (
-              <>
-                {esRegistro ? <FaUserPlus /> : <FaSignInAlt />}
-                {esRegistro ? 'Registrarse' : 'Ingresar'}
-              </>
-            )}
-          </button>
-        </form>
-        
-        <button 
-          onClick={() => {
-            setEsRegistro(!esRegistro);
-            setErrors({});
-            setTouched({});
-            setFormData({
-              nombre: '',
-              email: '',
-              password: '',
-              confirmPassword: ''
-            });
-          }} 
-          className="switch-button"
-          disabled={isLoading}
-        >
-          <FaExchangeAlt className="switch-icon" />
-          {esRegistro ? '¿Ya tienes cuenta? Inicia Sesión' : '¿No tienes cuenta? Regístrate'}
-        </button>
+            
+            <form onSubmit={handleSubmit} className="iniciar-sesion-form">
+              <div className="form-group">
+                <div className="input-wrapper">
+                  <FaEnvelope className="input-icon" />
+                  <input
+                    type="email"
+                    name="email"
+                    placeholder="Correo electrónico"
+                    className={`form-input ${hasError('email') ? 'error' : ''}`}
+                    value={formData.email}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    disabled={isLoading}
+                  />
+                </div>
+                {hasError('email') && (
+                  <span className="error-message">{errors.email}</span>
+                )}
+              </div>
+              
+              <div className="form-group">
+                <div className="input-wrapper">
+                  <FaLock className="input-icon" />
+                  <input
+                    type="password"
+                    name="password"
+                    placeholder="Contraseña"
+                    className={`form-input ${hasError('password') ? 'error' : ''}`}
+                    value={formData.password}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    disabled={isLoading}
+                  />
+                </div>
+                {hasError('password') && (
+                  <span className="error-message">{errors.password}</span>
+                )}
+              </div>
+              
+              <button 
+                type="submit" 
+                className="form-button"
+                disabled={isLoading}
+              >
+                {isLoading ? (
+                  <>
+                    <FaSpinner className="spinner-icon" />
+                    Ingresando...
+                  </>
+                ) : (
+                  <>
+                    <FaSignInAlt />
+                    Ingresar
+                  </>
+                )}
+              </button>
+            </form>
+            
+            <button 
+              onClick={() => {
+                setEsRegistro(true);
+                setErrors({});
+                setTouched({});
+                setFormData({
+                  nombre: '',
+                  email: '',
+                  password: '',
+                  confirmPassword: ''
+                });
+              }} 
+              className="switch-button"
+              disabled={isLoading}
+            >
+              <FaExchangeAlt className="switch-icon" />
+              ¿No tienes cuenta? Regístrate
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
