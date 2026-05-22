@@ -1,0 +1,75 @@
+@import '/src/styles/variables.css';
+
+/* Contenedor principal para páginas de autenticación */
+.auth-page-container {
+  min-height: calc(100vh - 200px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-xl);
+  animation: fadeInUp var(--transition-normal) ease-out;
+}
+
+/* Contenedor del formulario con ancho controlado */
+.auth-form-container {
+  max-width: 450px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* Sobrescribir .view-container cuando se usa en auth */
+.auth-page-container .view-container {
+  max-width: 450px;
+  margin: 0;
+  width: 100%;
+  animation: none;
+}
+
+/* Clase específica para cuando se usa view-container en auth */
+.view-container.auth-view {
+  max-width: 450px;
+  margin: 0 auto;
+  width: 100%;
+  padding: 0;
+}
+
+/* Ajustes para pantallas pequeñas */
+@media (max-width: 768px) {
+  .auth-page-container {
+    padding: var(--spacing-lg);
+  }
+  
+  .auth-form-container {
+    max-width: 400px;
+  }
+  
+  .view-container.auth-view {
+    max-width: 400px;
+  }
+}
+
+@media (max-width: 480px) {
+  .auth-page-container {
+    padding: var(--spacing-md);
+  }
+  
+  .auth-form-container {
+    max-width: 100%;
+  }
+  
+  .view-container.auth-view {
+    max-width: 100%;
+  }
+}
+
+/* Animación */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

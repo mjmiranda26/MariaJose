@@ -7,7 +7,7 @@ import Inicio from './views/Inicio';
 import Catalogo from './views/Catalogo';
 import Categorias from './views/Categorias';
 import Productos from './views/Productos';
-import Login from './views/Login';
+import Login from './views/AutenticacionPagina';
 import Pagina404 from './views/Pagina404';
 import './App.css';
 

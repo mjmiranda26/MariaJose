@@ -1,6 +1,6 @@
 import React from 'react';
 import { FaHome, FaMusic, FaStore } from 'react-icons/fa';
-import './Views.css';
+import '../styles/secciones/inicio.css';
 
 export default function Inicio() {
   return (
