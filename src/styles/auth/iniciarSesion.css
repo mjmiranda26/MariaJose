@@ -1,6 +1,5 @@
 @import '/src/styles/variables.css';
 
-/* Contenedor específico para páginas de autenticación */
 .auth-wrapper {
   min-height: calc(100vh - 200px);
   display: flex;

@@ -1,6 +1,5 @@
 @import '/src/styles/variables.css';
 
-/* Registrar Formulario - Estilos específicos */
 .registrar-card {
   background: var(--color-white);
   border-radius: var(--radius-xl);
