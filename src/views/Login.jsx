@@ -1,6 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import toast from 'react-hot-toast'; // Add this import
+import { 
+  FaEnvelope, 
+  FaLock, 
+  FaUser, 
+  FaSignInAlt, 
+  FaUserPlus,
+  FaExchangeAlt,
+  FaSpinner 
+} from 'react-icons/fa';
+import toast from 'react-hot-toast';
 import { supabase } from '../database/supabaseconfig';
 import { mostrarExito, mostrarError, mostrarCargando } from '../components/NotificacionOperacion';
 import './Views.css';
@@ -129,7 +138,7 @@ export default function Login() {
             console.log('Profile table not found, skipping');
           }
 
-          mostrarExito('¡Registro exitoso! Por favor, verifica tu correo electrónico');
+          mostrarExito('Registro exitoso. Por favor, verifica tu correo electrónico');
           setEsRegistro(false);
           setFormData({
             nombre: '',
@@ -151,7 +160,7 @@ export default function Login() {
         if (data.user) {
           // Dismiss loading toast before showing success and navigating
           toast.dismiss(loadingToastId);
-          mostrarExito('¡Bienvenido de nuevo!');
+          mostrarExito('Bienvenido de nuevo');
           setIsLoading(false);
           navigate('/inicio');
         }
@@ -195,21 +204,31 @@ export default function Login() {
   return (
     <div className="view-container">
       <div className="view-card login-card">
-        <h1>{esRegistro ? '📝 Registrarse' : '🔐 Iniciar Sesión'}</h1>
+        <div className="login-header">
+          {esRegistro ? (
+            <FaUserPlus className="login-icon" />
+          ) : (
+            <FaSignInAlt className="login-icon" />
+          )}
+          <h1>{esRegistro ? 'Registrarse' : 'Iniciar Sesión'}</h1>
+        </div>
         
         <form onSubmit={handleSubmit} className="login-form">
           {esRegistro && (
             <div className="form-group">
-              <input
-                type="text"
-                name="nombre"
-                placeholder="Nombre completo"
-                className={`form-input ${hasError('nombre') ? 'error' : ''}`}
-                value={formData.nombre}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                disabled={isLoading}
-              />
+              <div className="input-wrapper">
+                <FaUser className="input-icon" />
+                <input
+                  type="text"
+                  name="nombre"
+                  placeholder="Nombre completo"
+                  className={`form-input ${hasError('nombre') ? 'error' : ''}`}
+                  value={formData.nombre}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  disabled={isLoading}
+                />
+              </div>
               {hasError('nombre') && (
                 <span className="error-message">{errors.nombre}</span>
               )}
@@ -217,32 +236,38 @@ export default function Login() {
           )}
           
           <div className="form-group">
-            <input
-              type="email"
-              name="email"
-              placeholder="Correo electrónico"
-              className={`form-input ${hasError('email') ? 'error' : ''}`}
-              value={formData.email}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              disabled={isLoading}
-            />
+            <div className="input-wrapper">
+              <FaEnvelope className="input-icon" />
+              <input
+                type="email"
+                name="email"
+                placeholder="Correo electrónico"
+                className={`form-input ${hasError('email') ? 'error' : ''}`}
+                value={formData.email}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                disabled={isLoading}
+              />
+            </div>
             {hasError('email') && (
               <span className="error-message">{errors.email}</span>
             )}
           </div>
           
           <div className="form-group">
-            <input
-              type="password"
-              name="password"
-              placeholder="Contraseña"
-              className={`form-input ${hasError('password') ? 'error' : ''}`}
-              value={formData.password}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              disabled={isLoading}
-            />
+            <div className="input-wrapper">
+              <FaLock className="input-icon" />
+              <input
+                type="password"
+                name="password"
+                placeholder="Contraseña"
+                className={`form-input ${hasError('password') ? 'error' : ''}`}
+                value={formData.password}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                disabled={isLoading}
+              />
+            </div>
             {hasError('password') && (
               <span className="error-message">{errors.password}</span>
             )}
@@ -250,16 +275,19 @@ export default function Login() {
           
           {esRegistro && (
             <div className="form-group">
-              <input
-                type="password"
-                name="confirmPassword"
-                placeholder="Confirmar contraseña"
-                className={`form-input ${hasError('confirmPassword') ? 'error' : ''}`}
-                value={formData.confirmPassword}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                disabled={isLoading}
-              />
+              <div className="input-wrapper">
+                <FaLock className="input-icon" />
+                <input
+                  type="password"
+                  name="confirmPassword"
+                  placeholder="Confirmar contraseña"
+                  className={`form-input ${hasError('confirmPassword') ? 'error' : ''}`}
+                  value={formData.confirmPassword}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  disabled={isLoading}
+                />
+              </div>
               {hasError('confirmPassword') && (
                 <span className="error-message">{errors.confirmPassword}</span>
               )}
@@ -271,7 +299,17 @@ export default function Login() {
             className="form-button"
             disabled={isLoading}
           >
-            {isLoading ? 'Procesando...' : (esRegistro ? 'Registrarse' : 'Ingresar')}
+            {isLoading ? (
+              <>
+                <FaSpinner className="spinner-icon" />
+                Procesando...
+              </>
+            ) : (
+              <>
+                {esRegistro ? <FaUserPlus /> : <FaSignInAlt />}
+                {esRegistro ? 'Registrarse' : 'Ingresar'}
+              </>
+            )}
           </button>
         </form>
         
@@ -290,6 +328,7 @@ export default function Login() {
           className="switch-button"
           disabled={isLoading}
         >
+          <FaExchangeAlt className="switch-icon" />
           {esRegistro ? '¿Ya tienes cuenta? Inicia Sesión' : '¿No tienes cuenta? Regístrate'}
         </button>
       </div>
