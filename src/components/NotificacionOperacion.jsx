@@ -3,7 +3,6 @@ import toast, { Toaster } from 'react-hot-toast';
 import { FaCheckCircle, FaExclamationCircle, FaInfoCircle, FaSpinner } from 'react-icons/fa';
 import '../styles/NotificacionOperacion.css';
 
-// Toast notification functions
 export const mostrarExito = (mensaje) => {
   toast.success(mensaje, {
     duration: 4000,
