@@ -1,18 +1,19 @@
 import React from 'react';
 import toast, { Toaster } from 'react-hot-toast';
-import '../styles/NotificacionOperacion.css'
+import { FaCheckCircle, FaExclamationCircle, FaInfoCircle, FaSpinner } from 'react-icons/fa';
+import '../styles/NotificacionOperacion.css';
 
 // Toast notification functions
 export const mostrarExito = (mensaje) => {
   toast.success(mensaje, {
     duration: 4000,
     position: 'top-right',
-    icon: '✅',
+    icon: <FaCheckCircle />,
     style: {
-      background: '#10b981',
-      color: '#fff',
+      background: 'var(--color-success)',
+      color: 'var(--color-white)',
       padding: '16px',
-      borderRadius: '12px',
+      borderRadius: 'var(--radius-lg)',
     },
   });
 };
@@ -21,12 +22,12 @@ export const mostrarError = (mensaje) => {
   toast.error(mensaje, {
     duration: 5000,
     position: 'top-right',
-    icon: '❌',
+    icon: <FaExclamationCircle />,
     style: {
-      background: '#ef4444',
-      color: '#fff',
+      background: 'var(--color-error)',
+      color: 'var(--color-white)',
       padding: '16px',
-      borderRadius: '12px',
+      borderRadius: 'var(--radius-lg)',
     },
   });
 };
@@ -35,12 +36,12 @@ export const mostrarInfo = (mensaje) => {
   toast(mensaje, {
     duration: 3000,
     position: 'top-right',
-    icon: 'ℹ️',
+    icon: <FaInfoCircle />,
     style: {
-      background: '#3b82f6',
-      color: '#fff',
+      background: 'var(--color-info)',
+      color: 'var(--color-white)',
       padding: '16px',
-      borderRadius: '12px',
+      borderRadius: 'var(--radius-lg)',
     },
   });
 };
@@ -48,11 +49,12 @@ export const mostrarInfo = (mensaje) => {
 export const mostrarCargando = (mensaje) => {
   return toast.loading(mensaje, {
     position: 'top-right',
+    icon: <FaSpinner />,
     style: {
-      background: '#6b7280',
-      color: '#fff',
+      background: 'var(--color-gray-600)',
+      color: 'var(--color-white)',
       padding: '16px',
-      borderRadius: '12px',
+      borderRadius: 'var(--radius-lg)',
     },
   });
 };
@@ -67,15 +69,24 @@ export default function NotificacionOperacion({ children }) {
           success: {
             duration: 4000,
             style: {
-              background: '#10b981',
-              color: '#fff',
+              background: 'var(--color-success)',
+              color: 'var(--color-white)',
+              borderRadius: 'var(--radius-lg)',
             },
           },
           error: {
             duration: 5000,
             style: {
-              background: '#ef4444',
-              color: '#fff',
+              background: 'var(--color-error)',
+              color: 'var(--color-white)',
+              borderRadius: 'var(--radius-lg)',
+            },
+          },
+          loading: {
+            style: {
+              background: 'var(--color-gray-600)',
+              color: 'var(--color-white)',
+              borderRadius: 'var(--radius-lg)',
             },
           },
         }}
