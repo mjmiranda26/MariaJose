@@ -1,4 +1,3 @@
-/* Categorias View Container */
 .categorias-view {
   max-width: 1400px;
   margin: 0 auto;
@@ -6,7 +5,6 @@
   min-height: 100vh;
 }
 
-/* Header */
 .categorias-view-header {
   display: flex;
   justify-content: space-between;
@@ -34,7 +32,6 @@
   font-size: 0.875rem;
 }
 
-/* Buttons */
 .btn-primary-categoria {
   display: inline-flex;
   align-items: center;
@@ -83,7 +80,6 @@
   font-size: 1rem;
 }
 
-/* Controls Section */
 .categorias-controls {
   display: flex;
   justify-content: space-between;
@@ -93,7 +89,6 @@
   gap: var(--spacing-md);
 }
 
-/* Search Wrapper */
 .search-wrapper-categoria {
   position: relative;
   flex: 1;
@@ -144,7 +139,6 @@
   color: var(--color-gray-600);
 }
 
-/* View Toggle */
 .view-toggle {
   display: flex;
   gap: var(--spacing-sm);
@@ -174,7 +168,6 @@
   box-shadow: var(--shadow-sm);
 }
 
-/* Stats */
 .stats-categoria {
   margin-bottom: var(--spacing-lg);
   padding: var(--spacing-sm) var(--spacing-md);
@@ -189,14 +182,12 @@
   font-weight: 500;
 }
 
-/* Grid Container */
 .categorias-grid-categoria {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: var(--spacing-lg);
 }
 
-/* Loading State */
 .loading-state-categoria {
   display: flex;
   flex-direction: column;
@@ -227,7 +218,6 @@
   color: var(--color-gray-500);
 }
 
-/* Empty State */
 .empty-state-categoria {
   text-align: center;
   padding: var(--spacing-2xl);

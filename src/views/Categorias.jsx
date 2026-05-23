@@ -5,8 +5,10 @@ import ModalEdicionCategoria from '../components/categorias/ModalEdicionCategori
 import ModalEliminacionCategoria from '../components/categorias/ModalEliminacionCategoria';
 import TablaCategorias from '../components/categorias/TablaCategorias';
 import TarjetaCategoria from '../components/categorias/TarjetaCategoria';
+import Cargando from '../components/comun/Cargando';
+import CuadroBusqueda from '../components/busquedas/CuadroBusquedas';
 import { mostrarExito, mostrarError } from '../components/NotificacionOperacion';
-import { FaPlus, FaSearch, FaTimes, FaTh, FaList } from 'react-icons/fa';
+import { FaPlus, FaTh, FaList } from 'react-icons/fa';
 import '../styles/categorias/categorias.css';
 
 export default function Categorias() {
@@ -41,19 +43,11 @@ export default function Categorias() {
       if (error) throw error;
       setCategorias(data || []);
     } catch (error) {
-      console.error('Error al cargar categorías:', error);
+      console.error('Error:', error);
       mostrarError('No se pudieron cargar las categorías');
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
   };
 
   const resetForm = () => {
@@ -64,159 +58,90 @@ export default function Categorias() {
     });
   };
 
-  const handleOpenModalRegistro = () => {
-    resetForm();
-    setShowModalRegistro(true);
-  };
-
-  const handleCloseModalRegistro = () => {
-    setShowModalRegistro(false);
-    resetForm();
-  };
-
   const handleSaveCategoria = async () => {
-    if (!formData.nombre.trim()) {
-      mostrarError('El nombre de la categoría es requerido');
-      return;
-    }
-
-    if (formData.nombre.length < 3) {
+    if (!formData.nombre.trim() || formData.nombre.length < 3) {
       mostrarError('El nombre debe tener al menos 3 caracteres');
       return;
     }
 
     setModalLoading(true);
-
     try {
-      const { error } = await supabase
-        .from('categorias')
-        .insert([{
-          nombre: formData.nombre.trim(),
-          descripcion: formData.descripcion.trim(),
-          estado: formData.estado,
-          created_at: new Date(),
-          updated_at: new Date()
-        }]);
+      const { error } = await supabase.from('categorias').insert([{
+        nombre: formData.nombre.trim(),
+        descripcion: formData.descripcion.trim(),
+        estado: formData.estado,
+        created_at: new Date(),
+        updated_at: new Date()
+      }]);
 
       if (error) throw error;
       
-      mostrarExito('Categoría registrada exitosamente');
-      handleCloseModalRegistro();
+      mostrarExito('Categoría registrada');
+      setShowModalRegistro(false);
+      resetForm();
       cargarCategorias();
     } catch (error) {
-      console.error('Error al guardar categoría:', error);
-      
-      if (error.message.includes('duplicate key') || error.message.includes('unique')) {
-        mostrarError('Ya existe una categoría con este nombre');
-      } else {
-        mostrarError('Error al guardar la categoría');
-      }
+      mostrarError(error.message.includes('duplicate') ? 'Ya existe' : 'Error al guardar');
     } finally {
       setModalLoading(false);
     }
   };
 
-  const handleOpenModalEdicion = (categoria) => {
-    setCategoriaToEdit(categoria);
-    setShowModalEdicion(true);
-  };
-
-  const handleCloseModalEdicion = () => {
-    setShowModalEdicion(false);
-    setCategoriaToEdit(null);
-  };
-
-  const handleUpdateCategoria = async (formData) => {
+  const handleUpdateCategoria = async (data) => {
     setModalLoading(true);
-
     try {
       const { error } = await supabase
         .from('categorias')
-        .update({
-          nombre: formData.nombre.trim(),
-          descripcion: formData.descripcion.trim(),
-          estado: formData.estado,
-          updated_at: new Date()
-        })
+        .update({ ...data, updated_at: new Date() })
         .eq('id', categoriaToEdit.id);
 
       if (error) throw error;
       
-      mostrarExito('Categoría actualizada exitosamente');
-      handleCloseModalEdicion();
+      mostrarExito('Categoría actualizada');
+      setShowModalEdicion(false);
       cargarCategorias();
     } catch (error) {
-      console.error('Error al actualizar categoría:', error);
-      
-      if (error.message.includes('duplicate key') || error.message.includes('unique')) {
-        mostrarError('Ya existe una categoría con este nombre');
-      } else {
-        mostrarError('Error al actualizar la categoría');
-      }
+      mostrarError(error.message.includes('duplicate') ? 'Ya existe' : 'Error al actualizar');
     } finally {
       setModalLoading(false);
     }
   };
 
-  const handleDeleteFromModal = async () => {
+  const handleDeleteCategoria = async () => {
     setModalLoading(true);
-
     try {
-      const { error } = await supabase
-        .from('categorias')
-        .delete()
-        .eq('id', categoriaToEdit.id);
-
+      const { error } = await supabase.from('categorias').delete().eq('id', categoriaToEdit.id);
       if (error) throw error;
-
-      mostrarExito('Categoría eliminada exitosamente');
-      handleCloseModalEdicion();
+      
+      mostrarExito('Categoría eliminada');
+      setShowModalEdicion(false);
       cargarCategorias();
     } catch (error) {
-      console.error('Error al eliminar categoría:', error);
-      mostrarError('Error al eliminar la categoría');
+      mostrarError('Error al eliminar');
     } finally {
       setModalLoading(false);
     }
-  };
-
-  const handleOpenModalEliminacion = (categoria) => {
-    setCategoriaToDelete(categoria);
-    setShowModalEliminacion(true);
-  };
-
-  const handleCloseModalEliminacion = () => {
-    setShowModalEliminacion(false);
-    setCategoriaToDelete(null);
   };
 
   const handleConfirmEliminacion = async () => {
-    if (!categoriaToDelete) return;
-
     setModalLoading(true);
-
     try {
-      const { error } = await supabase
-        .from('categorias')
-        .delete()
-        .eq('id', categoriaToDelete.id);
-
+      const { error } = await supabase.from('categorias').delete().eq('id', categoriaToDelete.id);
       if (error) throw error;
-
-      mostrarExito('Categoría eliminada exitosamente');
-      handleCloseModalEliminacion();
+      
+      mostrarExito('Categoría eliminada');
+      setShowModalEliminacion(false);
       cargarCategorias();
     } catch (error) {
-      console.error('Error al eliminar categoría:', error);
-      mostrarError('Error al eliminar la categoría');
+      mostrarError('Error al eliminar');
     } finally {
       setModalLoading(false);
     }
   };
 
-  const filteredCategorias = categorias.filter(categoria =>
-    categoria.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    (categoria.descripcion && categoria.descripcion.toLowerCase().includes(searchTerm.toLowerCase()))
+  const filteredCategorias = categorias.filter(c =>
+    c.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (c.descripcion && c.descripcion.toLowerCase().includes(searchTerm.toLowerCase()))
   );
 
   return (
@@ -226,48 +151,24 @@ export default function Categorias() {
           <h1>Gestión de Categorías</h1>
           <p>Administra las categorías de productos</p>
         </div>
-        <button 
-          className="btn-primary-categoria"
-          onClick={handleOpenModalRegistro}
-        >
-          <FaPlus className="btn-icon" />
-          Nueva Categoría
+        <button className="btn-primary-categoria" onClick={() => setShowModalRegistro(true)}>
+          <FaPlus /> Nueva Categoría
         </button>
       </div>
 
       <div className="categorias-controls">
-        <div className="search-wrapper-categoria">
-          <FaSearch className="search-icon-categoria" />
-          <input
-            type="text"
-            placeholder="Buscar categorías..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="search-input-categoria"
-          />
-          {searchTerm && (
-            <button 
-              className="search-clear-categoria"
-              onClick={() => setSearchTerm('')}
-            >
-              <FaTimes />
-            </button>
-          )}
-        </div>
+        <CuadroBusqueda
+          valor={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          onClear={() => setSearchTerm('')}
+          placeholder="Buscar categorías..."
+        />
         
         <div className="view-toggle">
-          <button
-            className={`toggle-btn ${viewMode === 'grid' ? 'active' : ''}`}
-            onClick={() => setViewMode('grid')}
-            title="Vista de tarjetas"
-          >
+          <button className={`toggle-btn ${viewMode === 'grid' ? 'active' : ''}`} onClick={() => setViewMode('grid')}>
             <FaTh />
           </button>
-          <button
-            className={`toggle-btn ${viewMode === 'table' ? 'active' : ''}`}
-            onClick={() => setViewMode('table')}
-            title="Vista de tabla"
-          >
+          <button className={`toggle-btn ${viewMode === 'table' ? 'active' : ''}`} onClick={() => setViewMode('table')}>
             <FaList />
           </button>
         </div>
@@ -277,69 +178,60 @@ export default function Categorias() {
         <span>Total: {filteredCategorias.length} categorías</span>
       </div>
 
-      {viewMode === 'table' ? (
+      {loading ? (
+        <Cargando />
+      ) : viewMode === 'table' ? (
         <TablaCategorias
           categorias={filteredCategorias}
-          onEdit={handleOpenModalEdicion}
-          onDelete={handleOpenModalEliminacion}
-          onView={handleOpenModalEdicion}
+          onEdit={(c) => { setCategoriaToEdit(c); setShowModalEdicion(true); }}
+          onDelete={(c) => { setCategoriaToDelete(c); setShowModalEliminacion(true); }}
+          onView={(c) => { setCategoriaToEdit(c); setShowModalEdicion(true); }}
           loading={loading}
         />
+      ) : filteredCategorias.length === 0 ? (
+        <div className="empty-state-categoria">
+          <p>No hay categorías</p>
+          <button className="btn-outline-categoria" onClick={() => setShowModalRegistro(true)}>
+            <FaPlus /> Crear primera
+          </button>
+        </div>
       ) : (
         <div className="categorias-grid-categoria">
-          {loading ? (
-            <div className="loading-state-categoria">
-              <div className="spinner-categoria"></div>
-              <p>Cargando categorías...</p>
-            </div>
-          ) : filteredCategorias.length === 0 ? (
-            <div className="empty-state-categoria">
-              <p>No hay categorías registradas</p>
-              <button 
-                className="btn-outline-categoria"
-                onClick={handleOpenModalRegistro}
-              >
-                <FaPlus className="btn-icon" />
-                Crear primera categoría
-              </button>
-            </div>
-          ) : (
-            filteredCategorias.map((categoria) => (
-              <TarjetaCategoria
-                key={categoria.id}
-                categoria={categoria}
-                onEdit={handleOpenModalEdicion}
-                onDelete={handleOpenModalEliminacion}
-                onView={handleOpenModalEdicion}
-                variant="grid"
-              />
-            ))
-          )}
+          {filteredCategorias.map((categoria) => (
+            <TarjetaCategoria
+              key={categoria.id}
+              categoria={categoria}
+              onEdit={() => { setCategoriaToEdit(categoria); setShowModalEdicion(true); }}
+              onDelete={() => { setCategoriaToDelete(categoria); setShowModalEliminacion(true); }}
+              onView={() => { setCategoriaToEdit(categoria); setShowModalEdicion(true); }}
+              variant="grid"
+            />
+          ))}
         </div>
       )}
 
       <ModalRegistroCategoria
         show={showModalRegistro}
-        onClose={handleCloseModalRegistro}
+        onClose={() => { setShowModalRegistro(false); resetForm(); }}
         onSave={handleSaveCategoria}
         formData={formData}
-        onInputChange={handleInputChange}
+        onInputChange={(e) => setFormData({ ...formData, [e.target.name]: e.target.value })}
         editingCategoria={null}
         loading={modalLoading}
       />
 
       <ModalEdicionCategoria
         show={showModalEdicion}
-        onClose={handleCloseModalEdicion}
+        onClose={() => setShowModalEdicion(false)}
         onSave={handleUpdateCategoria}
-        onDelete={handleDeleteFromModal}
+        onDelete={handleDeleteCategoria}
         categoria={categoriaToEdit}
         loading={modalLoading}
       />
 
       <ModalEliminacionCategoria
         show={showModalEliminacion}
-        onClose={handleCloseModalEliminacion}
+        onClose={() => setShowModalEliminacion(false)}
         onConfirm={handleConfirmEliminacion}
         categoria={categoriaToDelete}
         loading={modalLoading}

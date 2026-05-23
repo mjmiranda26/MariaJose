@@ -1,11 +1,9 @@
 @import '/src/styles/variables.css';
 
-/* Inicio - Estilos específicos */
 .inicio-container {
   max-width: 1200px;
   margin: 0 auto;
   padding: var(--spacing-xl);
-  animation: fadeInUp var(--transition-normal) ease-out;
 }
 
 .inicio-card {
@@ -14,15 +12,8 @@
   padding: var(--spacing-2xl);
   box-shadow: var(--shadow-lg);
   text-align: center;
-  transition: transform var(--transition-normal), box-shadow var(--transition-normal);
 }
 
-.inicio-card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-xl);
-}
-
-/* Header de bienvenida */
 .welcome-header {
   display: flex;
   align-items: center;
@@ -38,93 +29,34 @@
 
 .inicio-card h1 {
   font-size: 1.875rem;
-  font-weight: 700;
-  background: linear-gradient(135deg, var(--color-gray-800) 0%, var(--color-primary-dark) 100%);
+  background: linear-gradient(135deg, var(--color-gray-800), var(--color-primary-dark));
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  margin: 0;
 }
 
 .inicio-card > p {
   color: var(--color-gray-500);
   margin-bottom: var(--spacing-xl);
-  font-size: 1rem;
 }
 
-/* Placeholder content */
-.placeholder-content {
-  background: linear-gradient(135deg, var(--color-gray-100) 0%, var(--color-gray-50) 100%);
-  border-radius: var(--radius-lg);
-  padding: var(--spacing-xl);
-  margin-top: var(--spacing-lg);
-  border: 2px dashed var(--color-primary-light);
-  transition: all var(--transition-normal);
-}
-
-.placeholder-content:hover {
-  border-color: var(--color-primary);
-  background: linear-gradient(135deg, var(--color-gray-50) 0%, var(--color-white) 100%);
-}
-
-.placeholder-icon {
-  font-size: 4rem;
-  margin-bottom: var(--spacing-md);
-  color: var(--color-primary);
-  display: inline-block;
-  animation: pulse 2s ease-in-out infinite;
-}
-
-@keyframes pulse {
-  0%, 100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.05);
-  }
-}
-
-.placeholder-content p {
-  color: var(--color-gray-700);
-  margin-bottom: var(--spacing-sm);
-  font-size: 1rem;
-}
-
-.placeholder-content small {
-  color: var(--color-gray-500);
-  font-size: 0.85rem;
-}
-
-/* Variante pequeña */
-.placeholder-content.small {
-  padding: var(--spacing-md);
-  margin-top: var(--spacing-md);
-}
-
-.placeholder-content.small .placeholder-icon {
-  font-size: 2rem;
-}
-
-/* Secciones adicionales */
 .inicio-features {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: var(--spacing-lg);
-  margin-top: var(--spacing-2xl);
+  margin-bottom: var(--spacing-2xl);
 }
 
 .feature-card {
   background: var(--color-gray-50);
   border-radius: var(--radius-lg);
   padding: var(--spacing-lg);
-  text-align: center;
-  transition: all var(--transition-normal);
+  transition: transform var(--transition-fast);
 }
 
 .feature-card:hover {
   transform: translateY(-4px);
   box-shadow: var(--shadow-md);
-  background: var(--color-white);
 }
 
 .feature-icon {
@@ -134,76 +66,36 @@
 }
 
 .feature-card h3 {
-  font-size: 1.125rem;
-  font-weight: 600;
+  font-size: 1rem;
   color: var(--color-gray-800);
-  margin-bottom: var(--spacing-sm);
+  margin-bottom: var(--spacing-xs);
 }
 
 .feature-card p {
-  font-size: 0.875rem;
+  font-size: 0.75rem;
   color: var(--color-gray-600);
-  margin: 0;
 }
 
-/* Animaciones */
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.placeholder-content {
+  background: var(--color-gray-50);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-xl);
+  border: 2px dashed var(--color-primary-light);
 }
 
-/* Responsive */
+.placeholder-icon {
+  font-size: 3rem;
+  color: var(--color-primary);
+  margin-bottom: var(--spacing-md);
+}
+
+.placeholder-content p {
+  color: var(--color-gray-600);
+}
+
 @media (max-width: 768px) {
-  .inicio-container {
-    padding: var(--spacing-lg);
-  }
-  
-  .inicio-card {
-    padding: var(--spacing-lg);
-  }
-  
-  .inicio-card h1 {
-    font-size: 1.5rem;
-  }
-  
-  .welcome-icon {
-    font-size: 2rem;
-  }
-  
-  .placeholder-icon {
-    font-size: 3rem;
-  }
-  
-  .inicio-features {
-    grid-template-columns: 1fr;
-    gap: var(--spacing-md);
-  }
-}
-
-@media (max-width: 480px) {
-  .inicio-container {
-    padding: var(--spacing-md);
-  }
-  
-  .inicio-card {
-    padding: var(--spacing-md);
-  }
-  
-  .inicio-card h1 {
-    font-size: 1.25rem;
-  }
-  
-  .placeholder-content {
-    padding: var(--spacing-md);
-  }
-  
-  .placeholder-icon {
-    font-size: 2rem;
-  }
+  .inicio-container { padding: var(--spacing-lg); }
+  .inicio-card { padding: var(--spacing-lg); }
+  .inicio-card h1 { font-size: 1.5rem; }
+  .inicio-features { grid-template-columns: 1fr; }
 }
