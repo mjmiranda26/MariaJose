@@ -26,6 +26,7 @@ export default function Productos() {
   const [modalLoading, setModalLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [totalItems, setTotalItems] = useState(0);
   const itemsPerPage = 10;
 
   const [formData, setFormData] = useState({
@@ -38,6 +39,9 @@ export default function Productos() {
 
   useEffect(() => {
     cargarCategorias();
+  }, []);
+
+  useEffect(() => {
     cargarProductos();
   }, [currentPage, selectedCategory, searchTerm]);
 
@@ -83,7 +87,8 @@ export default function Productos() {
       if (error) throw error;
       
       setProductos(data || []);
-      setTotalPages(Math.ceil(count / itemsPerPage));
+      setTotalItems(count || 0);
+      setTotalPages(Math.ceil((count || 0) / itemsPerPage));
     } catch (error) {
       console.error('Error:', error);
       mostrarError('No se pudieron cargar los productos');
@@ -201,9 +206,27 @@ export default function Productos() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const filteredProductos = productos.filter(p =>
-    p.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    (p.descripcion && p.descripcion.toLowerCase().includes(searchTerm.toLowerCase()))
+  // Componente de paginación reutilizable
+  const PaginationComponent = () => (
+    <div className="pagination">
+      <button 
+        onClick={() => handlePageChange(currentPage - 1)}
+        disabled={currentPage === 1}
+        className="pagination-btn"
+      >
+        ◀ Anterior
+      </button>
+      <span className="pagination-info">
+        Página {currentPage} de {totalPages}
+      </span>
+      <button 
+        onClick={() => handlePageChange(currentPage + 1)}
+        disabled={currentPage === totalPages}
+        className="pagination-btn"
+      >
+        Siguiente ▶
+      </button>
+    </div>
   );
 
   return (
@@ -259,20 +282,25 @@ export default function Productos() {
       </div>
 
       <div className="stats-producto">
-        <span>Total: {filteredProductos.length} productos | Página {currentPage} de {totalPages}</span>
+        <span>Total: {totalItems} productos | Página {currentPage} de {totalPages}</span>
       </div>
 
       {loading ? (
         <Cargando />
       ) : viewMode === 'table' ? (
-        <TablaProductos
-          productos={filteredProductos}
-          onEdit={(p) => { setProductoToEdit(p); setShowModalEdicion(true); }}
-          onDelete={(p) => { setProductoToDelete(p); setShowModalEliminacion(true); }}
-          onView={(p) => { setProductoToEdit(p); setShowModalEdicion(true); }}
-          loading={loading}
-        />
-      ) : filteredProductos.length === 0 ? (
+        <>
+          <TablaProductos
+            productos={productos}
+            onEdit={(p) => { setProductoToEdit(p); setShowModalEdicion(true); }}
+            onDelete={(p) => { setProductoToDelete(p); setShowModalEliminacion(true); }}
+            onView={(p) => { setProductoToEdit(p); setShowModalEdicion(true); }}
+            loading={loading}
+            currentPage={currentPage}
+          />
+          {/* Paginación para vista de tabla */}
+          {totalPages > 1 && <PaginationComponent />}
+        </>
+      ) : productos.length === 0 ? (
         <div className="empty-state-producto">
           <p>No hay productos registrados</p>
           <button className="btn-outline-producto" onClick={() => setShowModalRegistro(true)}>
@@ -282,7 +310,7 @@ export default function Productos() {
       ) : (
         <>
           <div className="productos-grid-producto">
-            {filteredProductos.map((producto) => (
+            {productos.map((producto) => (
               <TarjetaProducto
                 key={producto.id}
                 producto={producto}
@@ -292,28 +320,8 @@ export default function Productos() {
               />
             ))}
           </div>
-          
-          {totalPages > 1 && (
-            <div className="pagination">
-              <button 
-                onClick={() => handlePageChange(currentPage - 1)}
-                disabled={currentPage === 1}
-                className="pagination-btn"
-              >
-                Anterior
-              </button>
-              <span className="pagination-info">
-                Página {currentPage} de {totalPages}
-              </span>
-              <button 
-                onClick={() => handlePageChange(currentPage + 1)}
-                disabled={currentPage === totalPages}
-                className="pagination-btn"
-              >
-                Siguiente
-              </button>
-            </div>
-          )}
+          {/* Paginación para vista de grid */}
+          {totalPages > 1 && <PaginationComponent />}
         </>
       )}
 
