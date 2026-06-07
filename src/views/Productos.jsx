@@ -35,6 +35,8 @@ export default function Productos() {
     descripcion: '',
     categoria_id: '',
     stock: '',
+    imagen_url: '',
+    imagen_path: ''
   });
 
   useEffect(() => {
@@ -95,6 +97,8 @@ export default function Productos() {
         ...producto,
         categoria: producto.categorias?.nombre || 'Sin categoría',
         categoria_id: producto.categoria_id,
+        imagen_url: producto.imagen_url || null,
+        imagen_path: producto.imagen_path || null,
         categorias: undefined
       }));
       
@@ -116,11 +120,29 @@ export default function Productos() {
       descripcion: '',
       categoria_id: '',
       stock: '',
+      imagen_url: '',
+      imagen_path: ''
     });
   };
 
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleImageChange = (imageUrl, imagePath) => {
+    setFormData(prev => ({
+      ...prev,
+      imagen_url: imageUrl,
+      imagen_path: imagePath
+    }));
+  };
+
   const handleSaveProducto = async () => {
-    if (!formData.nombre.trim() || formData.nombre.length < 3) {
+    if (!formData.nombre || formData.nombre.trim().length < 3) {
       mostrarError('El nombre debe tener al menos 3 caracteres');
       return;
     }
@@ -135,22 +157,29 @@ export default function Productos() {
       return;
     }
 
-    if (!formData.categoria_id) {
-      mostrarError('Debe seleccionar una categoría');
+    if (!formData.categoria_id || formData.categoria_id === '') {
+      mostrarError('Debe seleccionar una categoría válida');
       return;
     }
 
     setModalLoading(true);
     try {
-      const { error } = await supabase.from('productos').insert([{
+      const productoData = {
         nombre: formData.nombre.trim(),
         precio: parseFloat(formData.precio),
-        descripcion: formData.descripcion.trim(),
+        descripcion: formData.descripcion?.trim() || '',
         categoria_id: parseInt(formData.categoria_id),
         stock: parseInt(formData.stock),
-        created_at: new Date(),
-        updated_at: new Date()
-      }]);
+        imagen_url: formData.imagen_url || null,
+        imagen_path: formData.imagen_path || null,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString()
+      };
+
+      const { data, error } = await supabase
+        .from('productos')
+        .insert([productoData])
+        .select();
 
       if (error) throw error;
       
@@ -161,7 +190,7 @@ export default function Productos() {
       cargarProductos();
     } catch (error) {
       console.error('Error al guardar:', error);
-      mostrarError(error.message.includes('duplicate') ? 'Ya existe un producto con ese nombre' : 'Error al guardar el producto');
+      mostrarError('Error al guardar el producto: ' + error.message);
     } finally {
       setModalLoading(false);
     }
@@ -170,7 +199,7 @@ export default function Productos() {
   const handleUpdateProducto = async (data) => {
     setModalLoading(true);
     try {
-      if (!data.categoria_id) {
+      if (!data.categoria_id || data.categoria_id === '') {
         mostrarError('Debe seleccionar una categoría');
         setModalLoading(false);
         return;
@@ -182,7 +211,9 @@ export default function Productos() {
         descripcion: data.descripcion?.trim() || '',
         categoria_id: parseInt(data.categoria_id),
         stock: parseInt(data.stock),
-        updated_at: new Date()
+        imagen_url: data.imagen_url || null,
+        imagen_path: data.imagen_path || null,
+        updated_at: new Date().toISOString()
       };
 
       const { error } = await supabase
@@ -213,7 +244,12 @@ export default function Productos() {
         return;
       }
 
-      console.log('Eliminando producto:', productoToDelete.id, productoToDelete.nombre);
+      // Eliminar imagen del storage si existe
+      if (productoToDelete.imagen_path) {
+        await supabase.storage
+          .from('productos-imagenes')
+          .remove([productoToDelete.imagen_path]);
+      }
 
       const { error } = await supabase
         .from('productos')
@@ -226,7 +262,6 @@ export default function Productos() {
       setShowModalEliminacion(false);
       setProductoToDelete(null);
       
-      // Recargar productos después de eliminar
       if (productos.length === 1 && currentPage > 1) {
         setCurrentPage(currentPage - 1);
       } else {
@@ -245,16 +280,12 @@ export default function Productos() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  // Funciones para abrir modales con debug
   const openEditModal = (producto) => {
-    console.log('Editando producto:', producto);
-    console.log('categoria_id:', producto.categoria_id);
     setProductoToEdit(producto);
     setShowModalEdicion(true);
   };
 
   const openDeleteModal = (producto) => {
-    console.log('Eliminando producto:', producto);
     setProductoToDelete(producto);
     setShowModalEliminacion(true);
   };
@@ -381,7 +412,8 @@ export default function Productos() {
         onClose={() => { setShowModalRegistro(false); resetForm(); }}
         onSave={handleSaveProducto}
         formData={formData}
-        onInputChange={(e) => setFormData({ ...formData, [e.target.name]: e.target.value })}
+        onInputChange={handleInputChange}
+        onImageChange={handleImageChange}
         categorias={categorias}
         loading={modalLoading}
       />

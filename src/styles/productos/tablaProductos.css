@@ -52,12 +52,12 @@
 
 .tabla-productos th:nth-child(2),
 .tabla-productos td:nth-child(2) {
-  width: 200px;
+  width: 80px;
 }
 
 .tabla-productos th:nth-child(3),
 .tabla-productos td:nth-child(3) {
-  width: 100px;
+  width: 200px;
 }
 
 .tabla-productos th:nth-child(4),
@@ -67,16 +67,21 @@
 
 .tabla-productos th:nth-child(5),
 .tabla-productos td:nth-child(5) {
-  width: 150px;
+  width: 100px;
 }
 
 .tabla-productos th:nth-child(6),
 .tabla-productos td:nth-child(6) {
-  width: 250px;
+  width: 120px;
 }
 
 .tabla-productos th:nth-child(7),
 .tabla-productos td:nth-child(7) {
+  width: 250px;
+}
+
+.tabla-productos th:nth-child(8),
+.tabla-productos td:nth-child(8) {
   width: 120px;
 }
 
@@ -86,6 +91,7 @@
   color: var(--color-gray-700);
   word-wrap: break-word;
   overflow-wrap: break-word;
+  vertical-align: middle;
 }
 
 .tabla-productos tbody tr {
@@ -95,6 +101,52 @@
 .tabla-productos tbody tr:hover {
   background-color: var(--color-gray-50);
   transform: scale(1.01);
+}
+
+/* Estilos para la columna de imagen */
+.imagen-columna {
+  text-align: center;
+}
+
+.tabla-imagen {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-fast);
+}
+
+.tabla-imagen:hover {
+  transform: scale(1.5);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  cursor: pointer;
+}
+
+.imagen-placeholder-tabla {
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--color-gray-100), var(--color-gray-200));
+  border-radius: var(--radius-md);
+  color: var(--color-gray-500);
+  font-size: 1.5rem;
+  margin: 0 auto;
+}
+
+.imagen-error {
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-error-light);
+  border-radius: var(--radius-md);
+  color: var(--color-error);
+  font-size: 1.5rem;
 }
 
 .nombre-columna .nombre-link {
@@ -302,7 +354,7 @@
   }
   
   .tabla-productos {
-    min-width: 768px;
+    min-width: 900px;
   }
 }
 
@@ -328,6 +380,7 @@
     border: 1px solid var(--color-gray-200);
     border-radius: var(--radius-md);
     background-color: var(--color-white);
+    position: relative;
   }
   
   .tabla-productos td {
@@ -355,6 +408,15 @@
   .tabla-productos td > * {
     flex: 2;
     text-align: right;
+  }
+  
+  .imagen-columna {
+    justify-content: center;
+  }
+  
+  .tabla-imagen {
+    width: 60px;
+    height: 60px;
   }
   
   .nombre-columna .nombre-link {
