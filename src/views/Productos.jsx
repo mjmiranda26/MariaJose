@@ -33,7 +33,7 @@ export default function Productos() {
     nombre: '',
     precio: '',
     descripcion: '',
-    categoria: '',
+    categoria_id: '',
     stock: '',
   });
 
@@ -65,11 +65,18 @@ export default function Productos() {
     try {
       let query = supabase
         .from('productos')
-        .select('*', { count: 'exact' });
+        .select(`
+          *,
+          categorias!categoria_id (
+            id,
+            nombre,
+            descripcion
+          )
+        `, { count: 'exact' });
 
       // Aplicar filtros
       if (selectedCategory) {
-        query = query.eq('categoria', selectedCategory);
+        query = query.eq('categoria_id', selectedCategory);
       }
 
       if (searchTerm) {
@@ -86,7 +93,14 @@ export default function Productos() {
 
       if (error) throw error;
       
-      setProductos(data || []);
+      // Transformar datos para mantener compatibilidad
+      const productosConCategoria = data.map(producto => ({
+        ...producto,
+        categoria: producto.categorias?.nombre || 'Sin categoría',
+        categoria_id: producto.categoria_id
+      }));
+      
+      setProductos(productosConCategoria || []);
       setTotalItems(count || 0);
       setTotalPages(Math.ceil((count || 0) / itemsPerPage));
     } catch (error) {
@@ -102,7 +116,7 @@ export default function Productos() {
       nombre: '',
       precio: '',
       descripcion: '',
-      categoria: '',
+      categoria_id: '',
       stock: '',
     });
   };
@@ -123,7 +137,7 @@ export default function Productos() {
       return;
     }
 
-    if (!formData.categoria) {
+    if (!formData.categoria_id) {
       mostrarError('Debe seleccionar una categoría');
       return;
     }
@@ -134,7 +148,7 @@ export default function Productos() {
         nombre: formData.nombre.trim(),
         precio: parseFloat(formData.precio),
         descripcion: formData.descripcion.trim(),
-        categoria: formData.categoria,
+        categoria_id: parseInt(formData.categoria_id),
         stock: parseInt(formData.stock),
         created_at: new Date(),
         updated_at: new Date()
@@ -148,6 +162,7 @@ export default function Productos() {
       setCurrentPage(1);
       cargarProductos();
     } catch (error) {
+      console.error('Error al guardar:', error);
       mostrarError(error.message.includes('duplicate') ? 'Ya existe un producto con ese nombre' : 'Error al guardar el producto');
     } finally {
       setModalLoading(false);
@@ -160,8 +175,10 @@ export default function Productos() {
       const { error } = await supabase
         .from('productos')
         .update({ 
-          ...data, 
+          nombre: data.nombre.trim(),
           precio: parseFloat(data.precio),
+          descripcion: data.descripcion.trim(),
+          categoria_id: parseInt(data.categoria_id),
           stock: parseInt(data.stock),
           updated_at: new Date() 
         })
@@ -173,6 +190,7 @@ export default function Productos() {
       setShowModalEdicion(false);
       cargarProductos();
     } catch (error) {
+      console.error('Error al actualizar:', error);
       mostrarError('Error al actualizar el producto');
     } finally {
       setModalLoading(false);
@@ -188,13 +206,13 @@ export default function Productos() {
       mostrarExito('Producto eliminado exitosamente');
       setShowModalEliminacion(false);
       
-      // Si es la última página y no hay productos, ir a la página anterior
       if (productos.length === 1 && currentPage > 1) {
         setCurrentPage(currentPage - 1);
       } else {
         cargarProductos();
       }
     } catch (error) {
+      console.error('Error al eliminar:', error);
       mostrarError('Error al eliminar el producto');
     } finally {
       setModalLoading(false);
@@ -206,7 +224,6 @@ export default function Productos() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  // Componente de paginación reutilizable
   const PaginationComponent = () => (
     <div className="pagination">
       <button 
@@ -266,7 +283,7 @@ export default function Productos() {
           >
             <option value="">Todas las categorías</option>
             {categorias.map(cat => (
-              <option key={cat.id} value={cat.nombre}>{cat.nombre}</option>
+              <option key={cat.id} value={cat.id}>{cat.nombre}</option>
             ))}
           </select>
         </div>
@@ -297,7 +314,6 @@ export default function Productos() {
             loading={loading}
             currentPage={currentPage}
           />
-          {/* Paginación para vista de tabla */}
           {totalPages > 1 && <PaginationComponent />}
         </>
       ) : productos.length === 0 ? (
@@ -320,7 +336,6 @@ export default function Productos() {
               />
             ))}
           </div>
-          {/* Paginación para vista de grid */}
           {totalPages > 1 && <PaginationComponent />}
         </>
       )}
