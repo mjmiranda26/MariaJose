@@ -74,7 +74,6 @@ export default function Productos() {
           )
         `, { count: 'exact' });
 
-      // Aplicar filtros
       if (selectedCategory) {
         query = query.eq('categoria_id', selectedCategory);
       }
@@ -83,7 +82,6 @@ export default function Productos() {
         query = query.ilike('nombre', `%${searchTerm}%`);
       }
 
-      // Paginación
       const from = (currentPage - 1) * itemsPerPage;
       const to = from + itemsPerPage - 1;
 
@@ -93,11 +91,11 @@ export default function Productos() {
 
       if (error) throw error;
       
-      // Transformar datos para mantener compatibilidad
       const productosConCategoria = data.map(producto => ({
         ...producto,
         categoria: producto.categorias?.nombre || 'Sin categoría',
-        categoria_id: producto.categoria_id
+        categoria_id: producto.categoria_id,
+        categorias: undefined
       }));
       
       setProductos(productosConCategoria || []);
@@ -172,26 +170,35 @@ export default function Productos() {
   const handleUpdateProducto = async (data) => {
     setModalLoading(true);
     try {
+      if (!data.categoria_id) {
+        mostrarError('Debe seleccionar una categoría');
+        setModalLoading(false);
+        return;
+      }
+
+      const updateData = {
+        nombre: data.nombre.trim(),
+        precio: parseFloat(data.precio),
+        descripcion: data.descripcion?.trim() || '',
+        categoria_id: parseInt(data.categoria_id),
+        stock: parseInt(data.stock),
+        updated_at: new Date()
+      };
+
       const { error } = await supabase
         .from('productos')
-        .update({ 
-          nombre: data.nombre.trim(),
-          precio: parseFloat(data.precio),
-          descripcion: data.descripcion.trim(),
-          categoria_id: parseInt(data.categoria_id),
-          stock: parseInt(data.stock),
-          updated_at: new Date() 
-        })
+        .update(updateData)
         .eq('id', productoToEdit.id);
 
       if (error) throw error;
       
       mostrarExito('Producto actualizado exitosamente');
       setShowModalEdicion(false);
+      setProductoToEdit(null);
       cargarProductos();
     } catch (error) {
       console.error('Error al actualizar:', error);
-      mostrarError('Error al actualizar el producto');
+      mostrarError('Error al actualizar el producto: ' + error.message);
     } finally {
       setModalLoading(false);
     }
@@ -200,20 +207,34 @@ export default function Productos() {
   const handleConfirmEliminacion = async () => {
     setModalLoading(true);
     try {
-      const { error } = await supabase.from('productos').delete().eq('id', productoToDelete.id);
+      if (!productoToDelete || !productoToDelete.id) {
+        mostrarError('Error: No se pudo identificar el producto a eliminar');
+        setModalLoading(false);
+        return;
+      }
+
+      console.log('Eliminando producto:', productoToDelete.id, productoToDelete.nombre);
+
+      const { error } = await supabase
+        .from('productos')
+        .delete()
+        .eq('id', productoToDelete.id);
+
       if (error) throw error;
       
-      mostrarExito('Producto eliminado exitosamente');
+      mostrarExito(`Producto "${productoToDelete.nombre}" eliminado exitosamente`);
       setShowModalEliminacion(false);
+      setProductoToDelete(null);
       
+      // Recargar productos después de eliminar
       if (productos.length === 1 && currentPage > 1) {
         setCurrentPage(currentPage - 1);
       } else {
-        cargarProductos();
+        await cargarProductos();
       }
     } catch (error) {
       console.error('Error al eliminar:', error);
-      mostrarError('Error al eliminar el producto');
+      mostrarError('Error al eliminar el producto: ' + error.message);
     } finally {
       setModalLoading(false);
     }
@@ -222,6 +243,20 @@ export default function Productos() {
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage);
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  // Funciones para abrir modales con debug
+  const openEditModal = (producto) => {
+    console.log('Editando producto:', producto);
+    console.log('categoria_id:', producto.categoria_id);
+    setProductoToEdit(producto);
+    setShowModalEdicion(true);
+  };
+
+  const openDeleteModal = (producto) => {
+    console.log('Eliminando producto:', producto);
+    setProductoToDelete(producto);
+    setShowModalEliminacion(true);
   };
 
   const PaginationComponent = () => (
@@ -299,7 +334,7 @@ export default function Productos() {
       </div>
 
       <div className="stats-producto">
-        <span>Total: {totalItems} productos | Página {currentPage} de {totalPages}</span>
+        <span>Total: {totalItems} productos | Página {currentPage} de {totalPages} | {itemsPerPage} por página</span>
       </div>
 
       {loading ? (
@@ -308,11 +343,12 @@ export default function Productos() {
         <>
           <TablaProductos
             productos={productos}
-            onEdit={(p) => { setProductoToEdit(p); setShowModalEdicion(true); }}
-            onDelete={(p) => { setProductoToDelete(p); setShowModalEliminacion(true); }}
-            onView={(p) => { setProductoToEdit(p); setShowModalEdicion(true); }}
+            onEdit={openEditModal}
+            onDelete={openDeleteModal}
+            onView={openEditModal}
             loading={loading}
             currentPage={currentPage}
+            itemsPerPage={itemsPerPage}
           />
           {totalPages > 1 && <PaginationComponent />}
         </>
@@ -330,9 +366,9 @@ export default function Productos() {
               <TarjetaProducto
                 key={producto.id}
                 producto={producto}
-                onEdit={() => { setProductoToEdit(producto); setShowModalEdicion(true); }}
-                onDelete={() => { setProductoToDelete(producto); setShowModalEliminacion(true); }}
-                onView={() => { setProductoToEdit(producto); setShowModalEdicion(true); }}
+                onEdit={() => openEditModal(producto)}
+                onDelete={() => openDeleteModal(producto)}
+                onView={() => openEditModal(producto)}
               />
             ))}
           </div>
@@ -352,7 +388,7 @@ export default function Productos() {
 
       <ModalEdicionProducto
         show={showModalEdicion}
-        onClose={() => setShowModalEdicion(false)}
+        onClose={() => { setShowModalEdicion(false); setProductoToEdit(null); }}
         onSave={handleUpdateProducto}
         producto={productoToEdit}
         categorias={categorias}
@@ -361,7 +397,7 @@ export default function Productos() {
 
       <ModalEliminacionProducto
         show={showModalEliminacion}
-        onClose={() => setShowModalEliminacion(false)}
+        onClose={() => { setShowModalEliminacion(false); setProductoToDelete(null); }}
         onConfirm={handleConfirmEliminacion}
         producto={productoToDelete}
         loading={modalLoading}

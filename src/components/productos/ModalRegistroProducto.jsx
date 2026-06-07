@@ -13,6 +13,12 @@ export default function ModalRegistroProducto({
 }) {
   if (!show) return null;
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log('Datos del formulario a guardar:', formData); // Debug
+    onSave();
+  };
+
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-container" onClick={(e) => e.stopPropagation()}>
@@ -24,16 +30,16 @@ export default function ModalRegistroProducto({
         </div>
 
         <div className="modal-body">
-          <form onSubmit={(e) => { e.preventDefault(); onSave(); }}>
+          <form onSubmit={handleSubmit}>
             <div className="form-group">
               <label htmlFor="nombre">Nombre del Producto *</label>
               <input
                 type="text"
                 id="nombre"
                 name="nombre"
-                value={formData.nombre}
+                value={formData.nombre || ''}
                 onChange={onInputChange}
-                placeholder="Ej: Laptop Gaming"
+                placeholder="Ej: Guitarra Acústica"
                 required
                 autoFocus
               />
@@ -46,7 +52,7 @@ export default function ModalRegistroProducto({
                   type="number"
                   id="precio"
                   name="precio"
-                  value={formData.precio}
+                  value={formData.precio || ''}
                   onChange={onInputChange}
                   placeholder="0.00"
                   step="0.01"
@@ -61,7 +67,7 @@ export default function ModalRegistroProducto({
                   type="number"
                   id="stock"
                   name="stock"
-                  value={formData.stock}
+                  value={formData.stock || ''}
                   onChange={onInputChange}
                   placeholder="0"
                   min="0"
@@ -71,17 +77,17 @@ export default function ModalRegistroProducto({
             </div>
 
             <div className="form-group">
-              <label htmlFor="categoria">Categoría *</label>
+              <label htmlFor="categoria_id">Categoría *</label>
               <select
-                id="categoria"
-                name="categoria"
-                value={formData.categoria}
+                id="categoria_id"
+                name="categoria_id"
+                value={formData.categoria_id || ''}
                 onChange={onInputChange}
                 required
               >
                 <option value="">Seleccione una categoría</option>
                 {categorias.map(cat => (
-                  <option key={cat.id} value={cat.nombre}>
+                  <option key={cat.id} value={cat.id}>
                     {cat.nombre}
                   </option>
                 ))}
@@ -93,7 +99,7 @@ export default function ModalRegistroProducto({
               <textarea
                 id="descripcion"
                 name="descripcion"
-                value={formData.descripcion}
+                value={formData.descripcion || ''}
                 onChange={onInputChange}
                 placeholder="Descripción del producto..."
                 rows="4"
