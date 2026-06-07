@@ -27,7 +27,7 @@ export default function Productos() {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [totalItems, setTotalItems] = useState(0);
-  const itemsPerPage = 10;
+  const itemsPerPage = 5;
 
   const [formData, setFormData] = useState({
     nombre: '',
