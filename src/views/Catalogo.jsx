@@ -9,10 +9,10 @@ import {
   FaHeart, 
   FaStar, 
   FaStarHalfAlt,
-  FaMusic,
-  FaHeadphones,
-  FaCompactDisc,
-  FaGuitar
+  FaLeaf,
+  FaGem,
+  FaGift,
+  FaTint
 } from 'react-icons/fa';
 import '../styles/catalogo/catalogo.css';
 
@@ -70,7 +70,8 @@ export default function Catalogo() {
         ...producto,
         categoria_nombre: producto.categorias?.nombre || 'Sin categoría',
         rating: Math.random() * 2 + 3,
-        reviews: Math.floor(Math.random() * 500) + 10
+        reviews: Math.floor(Math.random() * 500) + 10,
+        notas: obtenerNotasFragancia(producto.nombre)
       }));
       
       setProductos(productosFormateados || []);
@@ -79,6 +80,17 @@ export default function Catalogo() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const obtenerNotasFragancia = (nombre) => {
+    const notas = [
+      ['Notas de salida: Bergamota, Limón', 'Notas de corazón: Jazmín, Rosa', 'Notas de fondo: Sándalo, Vainilla'],
+      ['Notas de salida: Mandarina, Lavanda', 'Notas de corazón: Canela, Clavo', 'Notas de fondo: Ámbar, Almizcle'],
+      ['Notas de salida: Pomelo, Menta', 'Notas de corazón: Geranio, Pimienta', 'Notas de fondo: Cedro, Pachulí'],
+      ['Notas de salida: Pera, Melón', 'Notas de corazón: Lirio, Violeta', 'Notas de fondo: Almizcle, Madera'],
+      ['Notas de salida: Naranja, Tangerina', 'Notas de corazón: Flores Blancas', 'Notas de fondo: Vainilla, Coco']
+    ];
+    return notas[Math.floor(Math.random() * notas.length)];
   };
 
   const cargarFavoritos = () => {
@@ -107,16 +119,16 @@ export default function Catalogo() {
   };
 
   const getCategoryIcon = (categoriaNombre) => {
-    if (categoriaNombre.includes('Vinilo') || categoriaNombre.includes('CD')) {
-      return <FaCompactDisc />;
+    if (categoriaNombre === 'Perfumes') {
+      return <FaGem />;
     }
-    if (categoriaNombre.includes('Audio') || categoriaNombre.includes('Sonido')) {
-      return <FaHeadphones />;
+    if (categoriaNombre === 'Aguas Corporales') {
+      return <FaTint />;
     }
-    if (categoriaNombre.includes('Instrumento')) {
-      return <FaGuitar />;
+    if (categoriaNombre === 'Sets y Regalos') {
+      return <FaGift />;
     }
-    return <FaMusic />;
+    return <FaLeaf />;
   };
 
   const renderRating = (rating) => {
@@ -160,13 +172,13 @@ export default function Catalogo() {
       {/* Hero Section */}
       <div className="hero-section">
         <div className="hero-content">
-          <h1 className="hero-title">Tu Música, Tu Estilo</h1>
-          <p className="hero-subtitle">Descubre los mejores productos musicales al mejor precio</p>
+          <h1 className="hero-title">Esencia y Elegancia</h1>
+          <p className="hero-subtitle">Descubre nuestra colección exclusiva de perfumes y aguas corporales</p>
           <div className="hero-search">
             <FaSearch className="search-icon" />
             <input
               type="text"
-              placeholder="Busca tu producto favorito..."
+              placeholder="Busca por nombre, marca o notas..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="hero-search-input"
@@ -210,7 +222,7 @@ export default function Catalogo() {
                   className={`chip ${selectedCategory === '' ? 'active' : ''}`}
                   onClick={() => setSelectedCategory('')}
                 >
-                  Todas
+                  Todos
                 </button>
                 {categoriasUnicas.map(cat => (
                   <button
@@ -248,7 +260,7 @@ export default function Catalogo() {
 
       {/* Results Stats */}
       <div className="results-stats">
-        <p>Encontramos {productosFiltrados.length} productos para ti</p>
+        <p>Encontramos {productosFiltrados.length} fragancias para ti</p>
       </div>
 
       {/* Products Grid */}
@@ -270,9 +282,21 @@ export default function Catalogo() {
               </button>
 
               <div className="product-image">
-                <div className="image-placeholder">
-                  {getCategoryIcon(producto.categoria_nombre)}
-                </div>
+                {producto.imagen_url ? (
+                  <img 
+                    src={producto.imagen_url} 
+                    alt={producto.nombre}
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.style.display = 'none';
+                      e.target.parentElement.innerHTML = `<div class="image-placeholder">${getCategoryIcon(producto.categoria_nombre)}</div>`;
+                    }}
+                  />
+                ) : (
+                  <div className="image-placeholder">
+                    {getCategoryIcon(producto.categoria_nombre)}
+                  </div>
+                )}
               </div>
 
               <div className="product-info">
@@ -281,7 +305,16 @@ export default function Catalogo() {
                 
                 <div className="product-rating">
                   {renderRating(producto.rating)}
-                  <span className="rating-count">({producto.reviews})</span>
+                  <span className="rating-count">({producto.reviews} opiniones)</span>
+                </div>
+
+                <div className="product-notes">
+                  <div className="notes-header">
+                    <FaLeaf /> Notas Olfativas
+                  </div>
+                  {producto.notas && producto.notas.map((nota, idx) => (
+                    <p key={idx} className="note-item">{nota}</p>
+                  ))}
                 </div>
 
                 <p className="product-description">
@@ -293,7 +326,7 @@ export default function Catalogo() {
                   <div className="product-price">
                     <span className="price">{formatPrice(producto.precio)}</span>
                     {producto.stock > 0 && (
-                      <span className="stock-info">Stock disponible</span>
+                      <span className="stock-info">Envío gratis</span>
                     )}
                   </div>
                   
@@ -302,7 +335,7 @@ export default function Catalogo() {
                     disabled={producto.stock === 0}
                     onClick={() => alert(`Agregaste ${producto.nombre} al carrito`)}
                   >
-                    <FaShoppingCart /> Comprar
+                    <FaShoppingCart /> Agregar
                   </button>
                 </div>
               </div>
@@ -313,7 +346,7 @@ export default function Catalogo() {
 
       {!loading && productosFiltrados.length === 0 && (
         <div className="empty-state-catalogo">
-          <p>No encontramos productos que coincidan con tu búsqueda</p>
+          <p>No encontramos fragancias que coincidan con tu búsqueda</p>
           <button onClick={() => {
             setSearchTerm('');
             setSelectedCategory('');
