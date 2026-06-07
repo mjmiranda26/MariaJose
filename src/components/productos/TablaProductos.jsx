@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaEdit, FaTrash, FaEye } from 'react-icons/fa';
+import { FaEdit, FaTrash, FaEye, FaImage } from 'react-icons/fa';
 import '../../styles/productos/tablaProductos.css';
 
 export default function TablaProductos({
@@ -7,7 +7,9 @@ export default function TablaProductos({
   onEdit,
   onDelete,
   onView,
-  loading
+  loading,
+  currentPage = 1,
+  itemsPerPage = 5
 }) {
   const formatPrice = (price) => {
     return new Intl.NumberFormat('es-MX', {
@@ -40,6 +42,7 @@ export default function TablaProductos({
           <thead>
             <tr>
               <th>ID</th>
+              <th>Imagen</th>
               <th>Nombre</th>
               <th>Precio</th>
               <th>Stock</th>
@@ -51,25 +54,50 @@ export default function TablaProductos({
           <tbody>
             {productos.map((producto, index) => (
               <tr key={producto.id}>
-                <td data-label="ID">{index + 1}</td>
+                <td data-label="ID">{((currentPage - 1) * itemsPerPage) + index + 1}</td>
+                
+                <td data-label="Imagen" className="imagen-columna">
+                  {producto.imagen_url ? (
+                    <img 
+                      src={producto.imagen_url} 
+                      alt={producto.nombre}
+                      className="tabla-imagen"
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.style.display = 'none';
+                        e.target.parentElement.innerHTML = '<div class="imagen-error"><FaImage /></div>';
+                      }}
+                    />
+                  ) : (
+                    <div className="imagen-placeholder-tabla">
+                      <FaImage />
+                    </div>
+                  )}
+                </td>
+                
                 <td data-label="Nombre" className="nombre-columna">
                   <span className="nombre-link">{producto.nombre}</span>
                 </td>
+                
                 <td data-label="Precio" className="precio-columna">
                   <span className="precio-valor">{formatPrice(producto.precio)}</span>
                 </td>
+                
                 <td data-label="Stock">
                   <span className={`stock-badge ${producto.stock === 0 ? 'stock-out' : producto.stock < 5 ? 'stock-low' : 'stock-normal'}`}>
                     {producto.stock} unidades
                   </span>
                 </td>
+                
                 <td data-label="Categoría">
                   <span className="categoria-badge">{producto.categoria}</span>
                 </td>
+                
                 <td data-label="Descripción" className="descripcion-columna">
                   {producto.descripcion?.substring(0, 50) || '—'}
                   {producto.descripcion?.length > 50 && '...'}
                 </td>
+                
                 <td data-label="Acciones">
                   <div className="acciones-buttons">
                     <button

@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FaTimes, FaSave } from 'react-icons/fa';
+import ImageUploader from './ImageUploader';
 import '../../styles/productos/modalProducto.css';
 
 export default function ModalRegistroProducto({ 
@@ -8,6 +9,7 @@ export default function ModalRegistroProducto({
   onSave, 
   formData, 
   onInputChange,
+  onImageChange,
   categorias,
   loading 
 }) {
@@ -15,8 +17,15 @@ export default function ModalRegistroProducto({
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Datos del formulario a guardar:', formData); // Debug
     onSave();
+  };
+
+  const handleImageUpload = (imageUrl, imagePath) => {
+    onImageChange(imageUrl, imagePath);
+  };
+
+  const handleRemoveImage = () => {
+    onImageChange(null, null);
   };
 
   return (
@@ -39,7 +48,7 @@ export default function ModalRegistroProducto({
                 name="nombre"
                 value={formData.nombre || ''}
                 onChange={onInputChange}
-                placeholder="Ej: Guitarra Acústica"
+                placeholder="Ej: Guitarra Acústica Yamaha"
                 required
                 autoFocus
               />
@@ -95,13 +104,22 @@ export default function ModalRegistroProducto({
             </div>
 
             <div className="form-group">
+              <label>Imagen del Producto</label>
+              <ImageUploader
+                onImageUploaded={handleImageUpload}
+                currentImage={formData.imagen_url}
+                onRemove={handleRemoveImage}
+              />
+            </div>
+
+            <div className="form-group">
               <label htmlFor="descripcion">Descripción</label>
               <textarea
                 id="descripcion"
                 name="descripcion"
                 value={formData.descripcion || ''}
                 onChange={onInputChange}
-                placeholder="Descripción del producto..."
+                placeholder="Descripción detallada del producto..."
                 rows="4"
               />
             </div>

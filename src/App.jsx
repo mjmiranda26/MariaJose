@@ -24,17 +24,10 @@ function App() {
             <Route path="/home" element={<Navigate to="/inicio" replace />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Login />} />
-            <Route path="/about" element={<Inicio />} /> {/* O crea una página About */}
+            <Route path="/about" element={<Inicio />} /> 
+            <Route path="/catalogo" element={<Catalogo />} />
             
             {/* Rutas protegidas - requieren autenticación */}
-            <Route 
-              path="/catalogo" 
-              element={
-                <RutaProtegida>
-                  <Catalogo />
-                </RutaProtegida>
-              } 
-            />
             <Route 
               path="/categorias" 
               element={

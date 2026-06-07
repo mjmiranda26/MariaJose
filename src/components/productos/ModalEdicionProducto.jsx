@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FaTimes, FaSave } from 'react-icons/fa';
+import ImageUploader from './ImageUploader';
 import '../../styles/productos/modalProducto.css';
 
 export default function ModalEdicionProducto({ 
@@ -15,18 +16,21 @@ export default function ModalEdicionProducto({
     precio: '',
     descripcion: '',
     categoria_id: '',
-    stock: ''
+    stock: '',
+    imagen_url: '',
+    imagen_path: ''
   });
 
   useEffect(() => {
     if (producto) {
-      console.log('Producto recibido en modal:', producto); // Debug
       setFormData({
         nombre: producto.nombre || '',
         precio: producto.precio || '',
         descripcion: producto.descripcion || '',
-        categoria_id: producto.categoria_id || '', // Asegurar que se carga
-        stock: producto.stock || ''
+        categoria_id: producto.categoria_id || '',
+        stock: producto.stock || '',
+        imagen_url: producto.imagen_url || '',
+        imagen_path: producto.imagen_path || ''
       });
     }
   }, [producto]);
@@ -38,9 +42,31 @@ export default function ModalEdicionProducto({
     });
   };
 
+  const handleImageUpload = (imageUrl, imagePath) => {
+    setFormData({
+      ...formData,
+      imagen_url: imageUrl,
+      imagen_path: imagePath
+    });
+  };
+
+  const handleRemoveImage = async () => {
+    // Eliminar imagen de Storage si existe
+    if (formData.imagen_path) {
+      await supabase.storage
+        .from('productos-imagenes')
+        .remove([formData.imagen_path]);
+    }
+    
+    setFormData({
+      ...formData,
+      imagen_url: null,
+      imagen_path: null
+    });
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Enviando datos:', formData); // Debug
     onSave(formData);
   };
 
@@ -115,6 +141,15 @@ export default function ModalEdicionProducto({
                   </option>
                 ))}
               </select>
+            </div>
+
+            <div className="form-group">
+              <label>Imagen del Producto</label>
+              <ImageUploader
+                onImageUploaded={handleImageUpload}
+                currentImage={formData.imagen_url}
+                onRemove={handleRemoveImage}
+              />
             </div>
 
             <div className="form-group">

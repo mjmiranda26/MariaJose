@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaEdit, FaTrash, FaEye, FaBox, FaMoneyBill, FaTags } from 'react-icons/fa';
+import { FaEdit, FaTrash, FaEye, FaBox, FaMoneyBill, FaTags, FaImage } from 'react-icons/fa';
 import '../../styles/productos/tarjetaProducto.css';
 
 export default function TarjetaProducto({
@@ -37,6 +37,17 @@ export default function TarjetaProducto({
         <span className={`stock-badge-tarjeta ${getStockClass(producto.stock)}`}>
           {getStockText(producto.stock)}
         </span>
+      </div>
+      
+      <div className="tarjeta-imagen">
+        {producto.imagen_url ? (
+          <img src={producto.imagen_url} alt={producto.nombre} />
+        ) : (
+          <div className="imagen-placeholder">
+            <FaImage />
+            <span>Sin imagen</span>
+          </div>
+        )}
       </div>
       
       <div className="tarjeta-body">

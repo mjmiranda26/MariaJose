@@ -148,6 +148,60 @@
   color: var(--color-error);
 }
 
+/* Añade estos estilos */
+.tarjeta-imagen {
+  height: 180px;
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--color-gray-100), var(--color-gray-200));
+}
+
+.tarjeta-imagen img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--transition-normal);
+}
+
+.tarjeta-producto:hover .tarjeta-imagen img {
+  transform: scale(1.05);
+}
+
+.imagen-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: var(--color-gray-400);
+  font-size: 3rem;
+  gap: var(--spacing-sm);
+}
+
+.imagen-placeholder span {
+  font-size: 0.8rem;
+}
+
+/* Estilos para vista previa en modales */
+.image-preview {
+  margin-top: var(--spacing-sm);
+  margin-bottom: var(--spacing-md);
+  text-align: center;
+}
+
+.image-preview img {
+  max-width: 100%;
+  max-height: 150px;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+}
+
+.form-hint {
+  display: block;
+  margin-top: var(--spacing-xs);
+  color: var(--color-gray-500);
+  font-size: 0.75rem;
+}
+
 .tarjeta-btn.delete-btn:hover {
   background-color: rgba(245, 194, 194, 0.2);
   transform: scale(1.1);
