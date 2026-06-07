@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FaTimes, FaSave, FaTrash } from 'react-icons/fa';
+import { FaTimes, FaSave } from 'react-icons/fa';
 import '../../styles/productos/modalProducto.css';
 
 export default function ModalEdicionProducto({ 
@@ -14,17 +14,18 @@ export default function ModalEdicionProducto({
     nombre: '',
     precio: '',
     descripcion: '',
-    categoria: '',
+    categoria_id: '',
     stock: ''
   });
 
   useEffect(() => {
     if (producto) {
+      console.log('Producto recibido en modal:', producto); // Debug
       setFormData({
         nombre: producto.nombre || '',
         precio: producto.precio || '',
         descripcion: producto.descripcion || '',
-        categoria: producto.categoria || '',
+        categoria_id: producto.categoria_id || '', // Asegurar que se carga
         stock: producto.stock || ''
       });
     }
@@ -39,6 +40,7 @@ export default function ModalEdicionProducto({
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log('Enviando datos:', formData); // Debug
     onSave(formData);
   };
 
@@ -98,17 +100,17 @@ export default function ModalEdicionProducto({
             </div>
 
             <div className="form-group">
-              <label htmlFor="categoria">Categoría *</label>
+              <label htmlFor="categoria_id">Categoría *</label>
               <select
-                id="categoria"
-                name="categoria"
-                value={formData.categoria}
+                id="categoria_id"
+                name="categoria_id"
+                value={formData.categoria_id}
                 onChange={handleInputChange}
                 required
               >
                 <option value="">Seleccione una categoría</option>
                 {categorias.map(cat => (
-                  <option key={cat.id} value={cat.nombre}>
+                  <option key={cat.id} value={cat.id}>
                     {cat.nombre}
                   </option>
                 ))}
