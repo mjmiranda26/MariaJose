@@ -296,6 +296,39 @@
   transform: translateY(-1px);
 }
 
+
+/* Estilo para el link activo en desktop */
+.link.active {
+  background: var(--color-primary-light);
+  color: var(--color-accent-light);
+  font-weight: 600;
+}
+
+.link.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 60%;
+  height: 0.5rem;
+ 
+  transform: translateX(-50%);
+}
+
+/* Estilo para el link activo en mobile */
+.mobileLink.mobileActive {
+  background: rgba(243, 164, 181, 0.15);
+  color: var(--color-primary-dark);
+  font-weight: 600;
+  border-left: 3px solid var(--color-primary);
+  padding-left: 1rem;
+}
+
+.mobileLink.mobileActive:hover {
+  background: rgba(243, 164, 181, 0.25);
+  padding-left: 1.25rem;
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;

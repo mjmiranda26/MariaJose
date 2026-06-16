@@ -67,6 +67,24 @@ export default function Encabezado() {
     setMostrarConfirmacion(false);
   };
 
+  // Función para verificar si una ruta está activa
+  const isActive = (path) => {
+    if (path === '/inicio' && location.pathname === '/') {
+      return true;
+    }
+    return location.pathname === path;
+  };
+
+  // Función para obtener clases del link
+  const getLinkClass = (path) => {
+    return `${styles.link} ${isActive(path) ? styles.active : ''}`;
+  };
+
+  // Función para obtener clases del mobile link
+  const getMobileLinkClass = (path) => {
+    return `${styles.mobileLink} ${isActive(path) ? styles.mobileActive : ''}`;
+  };
+
   return (
     <>
       <header className={styles.header}>
@@ -76,7 +94,7 @@ export default function Encabezado() {
             className={styles.logo}
             onClick={() => manejarNavegacion("/inicio")}
           >
-            <img src={logo} alt="Discosca" className={styles.logoImg} />
+            <img src={logo} alt="Mache Store" className={styles.logoImg} />
             <span className={styles.logoText}>Mache Store</span>
           </div>
 
@@ -84,37 +102,67 @@ export default function Encabezado() {
           <nav className={styles.navDesktop}>
             {!esLogin ? (
               <>
-                <button onClick={() => manejarNavegacion("/inicio")} className={styles.link}>
+                <button 
+                  onClick={() => manejarNavegacion("/inicio")} 
+                  className={getLinkClass("/inicio")}
+                >
                   Inicio
                 </button>
-                <button onClick={() => manejarNavegacion("/login")} className={styles.link}>
+                <button 
+                  onClick={() => manejarNavegacion("/login")} 
+                  className={getLinkClass("/login")}
+                >
                   Iniciar Sesión
                 </button>
-                <button onClick={() => manejarNavegacion("/register")} className={styles.link}>
+                <button 
+                  onClick={() => manejarNavegacion("/register")} 
+                  className={getLinkClass("/register")}
+                >
                   Registrarse
                 </button>
-                <button onClick={() => manejarNavegacion("/about")} className={styles.link}>
-                  Acerca de Nosotros
+                <button 
+                  onClick={() => manejarNavegacion("/about")} 
+                  className={getLinkClass("/about")}
+                >
+                  Acerca de
                 </button>
               </>
             ) : (
               <>
-                <button onClick={() => manejarNavegacion("/inicio")} className={styles.link}>
+                <button 
+                  onClick={() => manejarNavegacion("/inicio")} 
+                  className={getLinkClass("/inicio")}
+                >
                   Inicio
                 </button>
-                <button onClick={() => manejarNavegacion("/catalogo")} className={styles.link}>
+                <button 
+                  onClick={() => manejarNavegacion("/catalogo")} 
+                  className={getLinkClass("/catalogo")}
+                >
                   Catálogo
                 </button>
-                <button onClick={() => manejarNavegacion("/productos")} className={styles.link}>
+                <button 
+                  onClick={() => manejarNavegacion("/productos")} 
+                  className={getLinkClass("/productos")}
+                >
                   Productos
                 </button>
-                <button onClick={() => manejarNavegacion("/categorias")} className={styles.link}>
+                <button 
+                  onClick={() => manejarNavegacion("/categorias")} 
+                  className={getLinkClass("/categorias")}
+                >
                   Categorías
                 </button>
-                <button onClick={() => manejarNavegacion("/about")} className={styles.link}>
+                <button 
+                  onClick={() => manejarNavegacion("/about")} 
+                  className={getLinkClass("/about")}
+                >
                   Acerca de
                 </button>
-                <button onClick={confirmarCerrarSesion} className={`${styles.link} ${styles.logout}`}>
+                <button 
+                  onClick={confirmarCerrarSesion} 
+                  className={`${styles.link} ${styles.logout}`}
+                >
                   Cerrar Sesión
                 </button>
               </>
@@ -147,37 +195,67 @@ export default function Encabezado() {
         <div className={styles.mobileBody}>
           {!esLogin ? (
             <>
-              <button onClick={() => manejarNavegacion("/inicio")} className={styles.mobileLink}>
+              <button 
+                onClick={() => manejarNavegacion("/inicio")} 
+                className={getMobileLinkClass("/inicio")}
+              >
                 Inicio
               </button>
-              <button onClick={() => manejarNavegacion("/login")} className={styles.mobileLink}>
+              <button 
+                onClick={() => manejarNavegacion("/login")} 
+                className={getMobileLinkClass("/login")}
+              >
                 Iniciar Sesión
               </button>
-              <button onClick={() => manejarNavegacion("/register")} className={styles.mobileLink}>
+              <button 
+                onClick={() => manejarNavegacion("/register")} 
+                className={getMobileLinkClass("/register")}
+              >
                 Registrarse
               </button>
-              <button onClick={() => manejarNavegacion("/about")} className={styles.mobileLink}>
+              <button 
+                onClick={() => manejarNavegacion("/about")} 
+                className={getMobileLinkClass("/about")}
+              >
                 Acerca de
               </button>
             </>
           ) : (
             <>
-              <button onClick={() => manejarNavegacion("/inicio")} className={styles.mobileLink}>
+              <button 
+                onClick={() => manejarNavegacion("/inicio")} 
+                className={getMobileLinkClass("/inicio")}
+              >
                 Inicio
               </button>
-              <button onClick={() => manejarNavegacion("/catalogo")} className={styles.mobileLink}>
+              <button 
+                onClick={() => manejarNavegacion("/catalogo")} 
+                className={getMobileLinkClass("/catalogo")}
+              >
                 Catálogo
               </button>
-              <button onClick={() => manejarNavegacion("/productos")} className={styles.mobileLink}>
+              <button 
+                onClick={() => manejarNavegacion("/productos")} 
+                className={getMobileLinkClass("/productos")}
+              >
                 Productos
               </button>
-              <button onClick={() => manejarNavegacion("/categorias")} className={styles.mobileLink}>
+              <button 
+                onClick={() => manejarNavegacion("/categorias")} 
+                className={getMobileLinkClass("/categorias")}
+              >
                 Categorías
               </button>
-              <button onClick={() => manejarNavegacion("/about")} className={styles.mobileLink}>
+              <button 
+                onClick={() => manejarNavegacion("/about")} 
+                className={getMobileLinkClass("/about")}
+              >
                 Acerca de
               </button>
-              <button onClick={confirmarCerrarSesion} className={`${styles.mobileLink} ${styles.mobileLogout}`}>
+              <button 
+                onClick={confirmarCerrarSesion} 
+                className={`${styles.mobileLink} ${styles.mobileLogout}`}
+              >
                 Cerrar Sesión
               </button>
             </>
