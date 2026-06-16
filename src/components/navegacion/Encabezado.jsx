@@ -136,7 +136,7 @@ export default function Encabezado() {
       {/* Mobile Menu */}
       <div className={`${styles.mobileMenu} ${mostrarMenu ? styles.mobileMenuOpen : ""}`}>
         <div className={styles.mobileHeader}>
-          <span className={styles.mobileTitle}>Discosca</span>
+          <span className={styles.mobileTitle}>Mache Store</span>
           <button 
             className={styles.mobileClose}
             onClick={() => setMostrarMenu(false)}
