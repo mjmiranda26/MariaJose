@@ -77,7 +77,7 @@ export default function Encabezado() {
             onClick={() => manejarNavegacion("/inicio")}
           >
             <img src={logo} alt="Discosca" className={styles.logoImg} />
-            <span className={styles.logoText}>Discosca</span>
+            <span className={styles.logoText}>Mache Store</span>
           </div>
 
           {/* Desktop Menu */}
