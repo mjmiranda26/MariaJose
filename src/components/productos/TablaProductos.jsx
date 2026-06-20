@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaEdit, FaTrash, FaEye, FaImage } from 'react-icons/fa';
+import { FaEdit, FaTrash, FaEye, FaImage, FaCopy, FaQrcode } from 'react-icons/fa';
 import '../../styles/productos/tablaProductos.css';
 
 export default function TablaProductos({
@@ -7,6 +7,8 @@ export default function TablaProductos({
   onEdit,
   onDelete,
   onView,
+  copiarProducto,
+  generarQRImagen,
   loading,
   currentPage = 1,
   itemsPerPage = 5
@@ -106,6 +108,20 @@ export default function TablaProductos({
                       title="Ver detalles"
                     >
                       <FaEye />
+                    </button>
+                    <button
+                      className="accion-btn copy-btn"
+                      onClick={() => copiarProducto(producto)}
+                      title="Copiar producto"
+                    >
+                      <FaCopy />
+                    </button>
+                    <button
+                      className="accion-btn qr-btn"
+                      onClick={() => generarQRImagen(producto)}
+                      title="Generar QR"
+                    >
+                      <FaQrcode />
                     </button>
                     <button
                       className="accion-btn edit-btn"

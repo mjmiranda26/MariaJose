@@ -154,6 +154,26 @@
   color: var(--color-gray-500);
 }
 
+
+.accion-btn.copy-btn {
+  color: var(--color-info);
+}
+
+.accion-btn.copy-btn:hover {
+  background-color: rgba(194, 212, 245, 0.2);
+  transform: scale(1.1);
+}
+
+.accion-btn.qr-btn {
+  color: var(--color-primary-dark);
+}
+
+.accion-btn.qr-btn:hover {
+  background-color: rgba(243, 164, 181, 0.2);
+  transform: scale(1.1);
+}
+
+
 @media (max-width: 768px) {
   .tabla-categorias thead {
     display: none;

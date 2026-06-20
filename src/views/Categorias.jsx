@@ -58,6 +58,20 @@ export default function Categorias() {
     });
   };
 
+  // Función para copiar categoría
+  const copiarCategoria = (categoria) => {
+    const texto = `ID: ${categoria.id}\nNombre: ${categoria.nombre}\nDescripción: ${categoria.descripcion || 'Sin descripción'}\nEstado: ${categoria.estado}`;
+    
+    navigator.clipboard.writeText(texto)
+      .then(() => {
+        mostrarExito('Categoría copiada al portapapeles');
+      })
+      .catch((err) => {
+        console.error('Error al copiar:', err);
+        mostrarError('Error al copiar la categoría');
+      });
+  };
+
   const handleSaveCategoria = async () => {
     if (!formData.nombre.trim() || formData.nombre.length < 3) {
       mostrarError('El nombre debe tener al menos 3 caracteres');
@@ -186,6 +200,7 @@ export default function Categorias() {
           onEdit={(c) => { setCategoriaToEdit(c); setShowModalEdicion(true); }}
           onDelete={(c) => { setCategoriaToDelete(c); setShowModalEliminacion(true); }}
           onView={(c) => { setCategoriaToEdit(c); setShowModalEdicion(true); }}
+          copiarCategoria={copiarCategoria}
           loading={loading}
         />
       ) : filteredCategorias.length === 0 ? (
@@ -204,6 +219,7 @@ export default function Categorias() {
               onEdit={() => { setCategoriaToEdit(categoria); setShowModalEdicion(true); }}
               onDelete={() => { setCategoriaToDelete(categoria); setShowModalEliminacion(true); }}
               onView={() => { setCategoriaToEdit(categoria); setShowModalEdicion(true); }}
+              copiarCategoria={copiarCategoria}
               variant="grid"
             />
           ))}

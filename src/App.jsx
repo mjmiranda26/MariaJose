@@ -9,7 +9,10 @@ import Categorias from './views/Categorias';
 import Productos from './views/Productos';
 import Login from './views/AutenticacionPagina';
 import Pagina404 from './views/Pagina404';
-import './App.css';
+import ProductoDetalle from './views/ProductoDetalle';
+
+
+
 
 function App() {
   return (
@@ -52,6 +55,9 @@ function App() {
                 </RutaProtegida>
               } 
             />
+
+    
+<Route path="/producto/:id" element={<ProductoDetalle />} />
             
             {/* Página 404 - Siempre al final */}
             <Route path="*" element={<Pagina404 />} />

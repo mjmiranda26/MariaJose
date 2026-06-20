@@ -207,6 +207,25 @@
   transform: scale(1.1);
 }
 
+
+.tarjeta-btn.copy-btn {
+  color: var(--color-info);
+}
+
+.tarjeta-btn.copy-btn:hover {
+  background-color: rgba(194, 212, 245, 0.2);
+  transform: scale(1.1);
+}
+
+.tarjeta-btn.qr-btn {
+  color: var(--color-primary-dark);
+}
+
+.tarjeta-btn.qr-btn:hover {
+  background-color: rgba(243, 164, 181, 0.2);
+  transform: scale(1.1);
+}
+
 @keyframes fadeInUp {
   from {
     opacity: 0;

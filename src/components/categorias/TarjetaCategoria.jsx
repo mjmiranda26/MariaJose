@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaEdit, FaTrash, FaEye, FaCalendarAlt, FaTag } from 'react-icons/fa';
+import { FaEdit, FaTrash, FaEye, FaCalendarAlt, FaTag, FaCopy } from 'react-icons/fa';
 import '../../styles/categorias/tarjetaCategoria.css';
 
 export default function TarjetaCategoria({
@@ -7,6 +7,7 @@ export default function TarjetaCategoria({
   onEdit,
   onDelete,
   onView,
+  copiarCategoria,
   variant = 'grid' // 'grid' o 'list'
 }) {
   const getEstadoBadgeClass = (estado) => {
@@ -54,6 +55,13 @@ export default function TarjetaCategoria({
               title="Ver detalles"
             >
               <FaEye />
+            </button>
+            <button
+              className="tarjeta-btn copy-btn"
+              onClick={() => copiarCategoria(categoria)}
+              title="Copiar categoría"
+            >
+              <FaCopy />
             </button>
             <button
               className="tarjeta-btn edit-btn"
@@ -108,6 +116,13 @@ export default function TarjetaCategoria({
             title="Ver detalles"
           >
             <FaEye />
+          </button>
+          <button
+            className="tarjeta-btn copy-btn"
+            onClick={() => copiarCategoria(categoria)}
+            title="Copiar categoría"
+          >
+            <FaCopy />
           </button>
           <button
             className="tarjeta-btn edit-btn"
