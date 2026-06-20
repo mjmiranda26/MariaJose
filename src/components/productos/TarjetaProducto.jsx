@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaEdit, FaTrash, FaEye, FaBox, FaMoneyBill, FaTags, FaImage, FaCopy, FaQrcode } from 'react-icons/fa';
+import { FaEdit, FaTrash, FaEye, FaBox, FaMoneyBill, FaTags, FaImage, FaCopy, FaQrcode, FaFilePdf } from 'react-icons/fa';
 import '../../styles/productos/tarjetaProducto.css';
 
 export default function TarjetaProducto({
@@ -8,7 +8,8 @@ export default function TarjetaProducto({
   onDelete,
   onView,
   copiarProducto,
-  generarQRImagen
+  generarQRImagen,
+  generarPDFProducto
 }) {
   const formatPrice = (price) => {
     return new Intl.NumberFormat('es-MX', {
@@ -94,6 +95,13 @@ export default function TarjetaProducto({
             title="Generar QR"
           >
             <FaQrcode />
+          </button>
+          <button
+            className="tarjeta-btn pdf-btn"
+            onClick={() => generarPDFProducto(producto)}
+            title="Generar PDF"
+          >
+            <FaFilePdf />
           </button>
           <button
             className="tarjeta-btn edit-btn"

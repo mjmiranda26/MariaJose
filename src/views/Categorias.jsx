@@ -9,6 +9,8 @@ import Cargando from '../components/comun/Cargando';
 import CuadroBusqueda from '../components/busquedas/CuadroBusquedas';
 import { mostrarExito, mostrarError } from '../components/NotificacionOperacion';
 import { FaPlus, FaTh, FaList } from 'react-icons/fa';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 import '../styles/categorias/categorias.css';
 
 export default function Categorias() {
@@ -70,6 +72,53 @@ export default function Categorias() {
         console.error('Error al copiar:', err);
         mostrarError('Error al copiar la categoría');
       });
+  };
+
+  // ========================================
+  // FUNCIÓN PARA GENERAR PDF DE CATEGORÍA
+  // ========================================
+  const generarPDFCategoria = (categoria) => {
+    try {
+      const doc = new jsPDF();
+      
+      // Título
+      doc.setFontSize(18);
+      doc.text('Reporte de Categoría', 14, 20);
+      
+      // Línea decorativa
+      doc.line(14, 25, 195, 25);
+      
+      // Información de la categoría
+      doc.setFontSize(12);
+      autoTable(doc, {
+        startY: 35,
+        head: [['Campo', 'Valor']],
+        body: [
+          ['ID', categoria.id],
+          ['Nombre', categoria.nombre],
+          ['Descripción', categoria.descripcion || 'Sin descripción'],
+          ['Estado', categoria.estado === 'activo' ? 'Activo' : 'Inactivo'],
+          ['Fecha Creación', new Date(categoria.created_at).toLocaleDateString('es-ES')],
+          ['Fecha Actualización', new Date(categoria.updated_at).toLocaleDateString('es-ES')]
+        ],
+        theme: 'striped',
+        headStyles: {
+          fillColor: [243, 164, 181],
+          textColor: [255, 255, 255],
+          fontStyle: 'bold'
+        },
+        styles: {
+          fontSize: 11
+        }
+      });
+      
+      // Descargar PDF
+      doc.save(`categoria_${categoria.id}.pdf`);
+      mostrarExito('PDF generado exitosamente');
+    } catch (error) {
+      console.error('Error al generar PDF:', error);
+      mostrarError('Error al generar el PDF');
+    }
   };
 
   const handleSaveCategoria = async () => {
@@ -201,6 +250,7 @@ export default function Categorias() {
           onDelete={(c) => { setCategoriaToDelete(c); setShowModalEliminacion(true); }}
           onView={(c) => { setCategoriaToEdit(c); setShowModalEdicion(true); }}
           copiarCategoria={copiarCategoria}
+          generarPDFCategoria={generarPDFCategoria}
           loading={loading}
         />
       ) : filteredCategorias.length === 0 ? (
@@ -220,6 +270,7 @@ export default function Categorias() {
               onDelete={() => { setCategoriaToDelete(categoria); setShowModalEliminacion(true); }}
               onView={() => { setCategoriaToEdit(categoria); setShowModalEdicion(true); }}
               copiarCategoria={copiarCategoria}
+              generarPDFCategoria={generarPDFCategoria}
               variant="grid"
             />
           ))}

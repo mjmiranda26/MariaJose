@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaEdit, FaTrash, FaEye, FaCalendarAlt, FaTag, FaCopy } from 'react-icons/fa';
+import { FaEdit, FaTrash, FaEye, FaCalendarAlt, FaTag, FaCopy, FaFilePdf } from 'react-icons/fa';
 import '../../styles/categorias/tarjetaCategoria.css';
 
 export default function TarjetaCategoria({
@@ -8,7 +8,8 @@ export default function TarjetaCategoria({
   onDelete,
   onView,
   copiarCategoria,
-  variant = 'grid' // 'grid' o 'list'
+  generarPDFCategoria,
+  variant = 'grid'
 }) {
   const getEstadoBadgeClass = (estado) => {
     return estado === 'activo' ? 'badge-tarjeta-success' : 'badge-tarjeta-inactive';
@@ -62,6 +63,13 @@ export default function TarjetaCategoria({
               title="Copiar categoría"
             >
               <FaCopy />
+            </button>
+            <button
+              className="tarjeta-btn pdf-btn"
+              onClick={() => generarPDFCategoria(categoria)}
+              title="Generar PDF"
+            >
+              <FaFilePdf />
             </button>
             <button
               className="tarjeta-btn edit-btn"
@@ -123,6 +131,13 @@ export default function TarjetaCategoria({
             title="Copiar categoría"
           >
             <FaCopy />
+          </button>
+          <button
+            className="tarjeta-btn pdf-btn"
+            onClick={() => generarPDFCategoria(categoria)}
+            title="Generar PDF"
+          >
+            <FaFilePdf />
           </button>
           <button
             className="tarjeta-btn edit-btn"

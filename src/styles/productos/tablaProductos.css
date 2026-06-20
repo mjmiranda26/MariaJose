@@ -341,6 +341,99 @@
   transform: scale(1.1);
 }
 
+/* Add to tablaProductos.css, tablaCategorias.css, tarjetaProducto.css, tarjetaCategoria.css */
+
+/* PDF Button */
+.accion-btn.pdf-btn {
+  color: #dc3545;
+}
+
+.accion-btn.pdf-btn:hover {
+  background-color: rgba(220, 53, 69, 0.1);
+  transform: scale(1.1);
+}
+
+.tarjeta-btn.pdf-btn {
+  color: #dc3545;
+}
+
+.tarjeta-btn.pdf-btn:hover {
+  background-color: rgba(220, 53, 69, 0.1);
+  transform: scale(1.1);
+}
+
+
+.btn-export-pdf {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.2rem;
+  background: #dc3545;
+  color: white;
+  border: none;
+  border-radius: var(--radius-lg);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.btn-export-pdf:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  background: #c82333;
+}
+
+.header-buttons {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+/* PDF Button */
+.accion-btn.pdf-btn {
+  color: #dc3545;
+}
+
+.accion-btn.pdf-btn:hover {
+  background-color: rgba(220, 53, 69, 0.1);
+  transform: scale(1.1);
+}
+
+.tarjeta-btn.pdf-btn {
+  color: #dc3545;
+}
+
+.tarjeta-btn.pdf-btn:hover {
+  background-color: rgba(220, 53, 69, 0.1);
+  transform: scale(1.1);
+}
+
+/* Export All Button */
+.btn-export-pdf {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.2rem;
+  background: #dc3545;
+  color: white;
+  border: none;
+  border-radius: var(--radius-lg);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.btn-export-pdf:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  background: #c82333;
+}
+
+.header-buttons {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
 
 @keyframes spin {
   0% { transform: rotate(0deg); }
