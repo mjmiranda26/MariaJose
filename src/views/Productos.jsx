@@ -9,7 +9,9 @@ import TarjetaProducto from '../components/productos/TarjetaProducto';
 import Cargando from '../components/comun/Cargando';
 import CuadroBusqueda from '../components/busquedas/CuadroBusquedas';
 import { mostrarExito, mostrarError } from '../components/NotificacionOperacion';
-import { FaPlus, FaTh, FaList } from 'react-icons/fa';
+import { FaPlus, FaTh, FaList, FaFilePdf } from 'react-icons/fa';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 import '../styles/productos/productos.css';
 
 export default function Productos() {
@@ -158,7 +160,7 @@ export default function Productos() {
       });
   };
 
-  // Función para generar QR - SIMPLIFICADA
+  // Función para generar QR
   const generarQRImagen = (producto) => {
     console.log('🔴 QR: FUNCIÓN LLAMADA');
     console.log('🔴 Producto:', producto);
@@ -172,6 +174,119 @@ export default function Productos() {
     setProductoQR(producto);
     setShowModalQR(true);
     console.log('✅ Modal QR abierto');
+  };
+
+  // ========================================
+  // FUNCIÓN PARA GENERAR PDF DE PRODUCTO INDIVIDUAL
+  // ========================================
+  const generarPDFProducto = (producto) => {
+    try {
+      const doc = new jsPDF();
+      
+      // Título
+      doc.setFontSize(18);
+      doc.text('Reporte de Producto', 14, 20);
+      
+      // Línea decorativa
+      doc.line(14, 25, 195, 25);
+      
+      // Información del producto
+      doc.setFontSize(12);
+      autoTable(doc, {
+        startY: 35,
+        head: [['Campo', 'Valor']],
+        body: [
+          ['ID', producto.id],
+          ['Nombre', producto.nombre],
+          ['Precio', `$${producto.precio.toFixed(2)}`],
+          ['Stock', `${producto.stock} unidades`],
+          ['Categoría', producto.categoria],
+          ['Descripción', producto.descripcion || 'Sin descripción'],
+          ['Fecha Creación', new Date(producto.created_at).toLocaleDateString('es-ES')],
+          ['Fecha Actualización', new Date(producto.updated_at).toLocaleDateString('es-ES')]
+        ],
+        theme: 'striped',
+        headStyles: {
+          fillColor: [243, 164, 181],
+          textColor: [255, 255, 255],
+          fontStyle: 'bold'
+        },
+        styles: {
+          fontSize: 11
+        }
+      });
+      
+      // Descargar PDF
+      doc.save(`producto_${producto.id}.pdf`);
+      mostrarExito('PDF generado exitosamente');
+    } catch (error) {
+      console.error('Error al generar PDF:', error);
+      mostrarError('Error al generar el PDF');
+    }
+  };
+
+  // ========================================
+  // FUNCIÓN PARA GENERAR PDF DE TODOS LOS PRODUCTOS
+  // ========================================
+  const generarPDFTodosProductos = () => {
+    try {
+      const doc = new jsPDF();
+      
+      // Título
+      doc.setFontSize(18);
+      doc.text('Reporte de Todos los Productos', 14, 20);
+      
+      // Línea decorativa
+      doc.line(14, 25, 195, 25);
+      
+      // Fecha de generación
+      doc.setFontSize(10);
+      doc.text(`Generado: ${new Date().toLocaleString('es-ES')}`, 14, 33);
+      
+      // Tabla con todos los productos
+      doc.setFontSize(12);
+      const tableBody = productos.map(p => [
+        p.id,
+        p.nombre,
+        `$${p.precio.toFixed(2)}`,
+        `${p.stock} uds`,
+        p.categoria
+      ]);
+      
+      autoTable(doc, {
+        startY: 40,
+        head: [['ID', 'Nombre', 'Precio', 'Stock', 'Categoría']],
+        body: tableBody,
+        theme: 'striped',
+        headStyles: {
+          fillColor: [243, 164, 181],
+          textColor: [255, 255, 255],
+          fontStyle: 'bold'
+        },
+        styles: {
+          fontSize: 9
+        },
+        columnStyles: {
+          0: { cellWidth: 20 },
+          1: { cellWidth: 60 },
+          2: { cellWidth: 30 },
+          3: { cellWidth: 30 },
+          4: { cellWidth: 40 }
+        }
+      });
+      
+      // Agregar total de productos al final
+      const finalY = doc.lastAutoTable.finalY + 10;
+      doc.setFontSize(10);
+      doc.text(`Total de productos: ${productos.length}`, 14, finalY);
+      
+      // Descargar PDF
+      doc.save(`todos_productos.pdf`);
+      mostrarExito('PDF de todos los productos generado exitosamente');
+    } catch (error) {
+      console.error('Error al generar PDF:', error);
+      mostrarError('Error al generar el PDF');
+    }
   };
 
   const handleSaveProducto = async () => {
@@ -351,9 +466,14 @@ export default function Productos() {
           <h1>Gestión de Productos</h1>
           <p>Administra el inventario de productos</p>
         </div>
-        <button className="btn-primary-producto" onClick={() => setShowModalRegistro(true)}>
-          <FaPlus /> Nuevo Producto
-        </button>
+        <div className="header-buttons">
+          <button className="btn-export-pdf" onClick={generarPDFTodosProductos}>
+            <FaFilePdf /> Exportar Todos
+          </button>
+          <button className="btn-primary-producto" onClick={() => setShowModalRegistro(true)}>
+            <FaPlus /> Nuevo Producto
+          </button>
+        </div>
       </div>
 
       <div className="productos-controls">
@@ -411,6 +531,7 @@ export default function Productos() {
             onView={openEditModal}
             copiarProducto={copiarProducto}
             generarQRImagen={generarQRImagen}
+            generarPDFProducto={generarPDFProducto}
             loading={loading}
             currentPage={currentPage}
             itemsPerPage={itemsPerPage}
@@ -436,6 +557,7 @@ export default function Productos() {
                 onView={() => openEditModal(producto)}
                 copiarProducto={copiarProducto}
                 generarQRImagen={generarQRImagen}
+                generarPDFProducto={generarPDFProducto}
               />
             ))}
           </div>
@@ -474,7 +596,6 @@ export default function Productos() {
       <ModalQRProducto
         show={showModalQR}
         onClose={() => {
-          console.log('❌ Cerrando modal QR desde Productos');
           setShowModalQR(false);
           setProductoQR(null);
         }}
