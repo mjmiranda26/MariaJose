@@ -1,12 +1,14 @@
 import React from 'react';
-import { FaEdit, FaTrash, FaEye, FaBox, FaMoneyBill, FaTags, FaImage } from 'react-icons/fa';
+import { FaEdit, FaTrash, FaEye, FaBox, FaMoneyBill, FaTags, FaImage, FaCopy, FaQrcode } from 'react-icons/fa';
 import '../../styles/productos/tarjetaProducto.css';
 
 export default function TarjetaProducto({
   producto,
   onEdit,
   onDelete,
-  onView
+  onView,
+  copiarProducto,
+  generarQRImagen
 }) {
   const formatPrice = (price) => {
     return new Intl.NumberFormat('es-MX', {
@@ -78,6 +80,20 @@ export default function TarjetaProducto({
             title="Ver detalles"
           >
             <FaEye />
+          </button>
+          <button
+            className="tarjeta-btn copy-btn"
+            onClick={() => copiarProducto(producto)}
+            title="Copiar producto"
+          >
+            <FaCopy />
+          </button>
+          <button
+            className="tarjeta-btn qr-btn"
+            onClick={() => generarQRImagen(producto)}
+            title="Generar QR"
+          >
+            <FaQrcode />
           </button>
           <button
             className="tarjeta-btn edit-btn"

@@ -3,6 +3,7 @@ import { supabase } from '../database/supabaseconfig';
 import ModalRegistroProducto from '../components/productos/ModalRegistroProducto';
 import ModalEdicionProducto from '../components/productos/ModalEdicionProducto';
 import ModalEliminacionProducto from '../components/productos/ModalEliminacionProducto';
+import ModalQRProducto from '../components/productos/ModalQRProducto';
 import TablaProductos from '../components/productos/TablaProductos';
 import TarjetaProducto from '../components/productos/TarjetaProducto';
 import Cargando from '../components/comun/Cargando';
@@ -18,8 +19,10 @@ export default function Productos() {
   const [showModalRegistro, setShowModalRegistro] = useState(false);
   const [showModalEdicion, setShowModalEdicion] = useState(false);
   const [showModalEliminacion, setShowModalEliminacion] = useState(false);
+  const [showModalQR, setShowModalQR] = useState(false);
   const [productoToEdit, setProductoToEdit] = useState(null);
   const [productoToDelete, setProductoToDelete] = useState(null);
+  const [productoQR, setProductoQR] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [viewMode, setViewMode] = useState('grid');
   const [selectedCategory, setSelectedCategory] = useState('');
@@ -141,6 +144,36 @@ export default function Productos() {
     }));
   };
 
+  // Función para copiar producto
+  const copiarProducto = (producto) => {
+    const texto = `ID: ${producto.id}\nNombre: ${producto.nombre}\nPrecio: $${producto.precio}\nCategoría: ${producto.categoria}\nStock: ${producto.stock} unidades\nDescripción: ${producto.descripcion || 'Sin descripción'}`;
+    
+    navigator.clipboard.writeText(texto)
+      .then(() => {
+        mostrarExito('Producto copiado al portapapeles');
+      })
+      .catch((err) => {
+        console.error('Error al copiar:', err);
+        mostrarError('Error al copiar el producto');
+      });
+  };
+
+  // Función para generar QR - SIMPLIFICADA
+  const generarQRImagen = (producto) => {
+    console.log('🔴 QR: FUNCIÓN LLAMADA');
+    console.log('🔴 Producto:', producto);
+    
+    if (!producto) {
+      console.error('❌ Error: Producto es null');
+      mostrarError('Error: No se pudo generar el QR');
+      return;
+    }
+    
+    setProductoQR(producto);
+    setShowModalQR(true);
+    console.log('✅ Modal QR abierto');
+  };
+
   const handleSaveProducto = async () => {
     if (!formData.nombre || formData.nombre.trim().length < 3) {
       mostrarError('El nombre debe tener al menos 3 caracteres');
@@ -244,7 +277,6 @@ export default function Productos() {
         return;
       }
 
-      // Eliminar imagen del storage si existe
       if (productoToDelete.imagen_path) {
         await supabase.storage
           .from('productos-imagenes')
@@ -377,6 +409,8 @@ export default function Productos() {
             onEdit={openEditModal}
             onDelete={openDeleteModal}
             onView={openEditModal}
+            copiarProducto={copiarProducto}
+            generarQRImagen={generarQRImagen}
             loading={loading}
             currentPage={currentPage}
             itemsPerPage={itemsPerPage}
@@ -400,6 +434,8 @@ export default function Productos() {
                 onEdit={() => openEditModal(producto)}
                 onDelete={() => openDeleteModal(producto)}
                 onView={() => openEditModal(producto)}
+                copiarProducto={copiarProducto}
+                generarQRImagen={generarQRImagen}
               />
             ))}
           </div>
@@ -433,6 +469,16 @@ export default function Productos() {
         onConfirm={handleConfirmEliminacion}
         producto={productoToDelete}
         loading={modalLoading}
+      />
+
+      <ModalQRProducto
+        show={showModalQR}
+        onClose={() => {
+          console.log('❌ Cerrando modal QR desde Productos');
+          setShowModalQR(false);
+          setProductoQR(null);
+        }}
+        producto={productoQR}
       />
     </div>
   );

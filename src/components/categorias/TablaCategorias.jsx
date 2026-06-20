@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaEdit, FaTrash, FaEye } from 'react-icons/fa';
+import { FaEdit, FaTrash, FaEye, FaCopy } from 'react-icons/fa';
 import '../../styles/categorias/tablaCategorias.css';
 
 export default function TablaCategorias({
@@ -7,6 +7,7 @@ export default function TablaCategorias({
   onEdit,
   onDelete,
   onView,
+  copiarCategoria,
   loading
 }) {
   const getEstadoBadgeClass = (estado) => {
@@ -84,6 +85,13 @@ export default function TablaCategorias({
                       title="Ver detalles"
                     >
                       <FaEye />
+                    </button>
+                    <button
+                      className="accion-btn copy-btn"
+                      onClick={() => copiarCategoria(categoria)}
+                      title="Copiar categoría"
+                    >
+                      <FaCopy />
                     </button>
                     <button
                       className="accion-btn edit-btn"
